@@ -112,7 +112,7 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
         var comment = comments.FirstOrDefault(x => x.Id == commentId) ??
                       throw new ProblemDetailsException(new HttpValidationProblemDetails
                       {
-                          Status = 422, Title = "Comment not found", Detail = $"CommentId {commentId}",
+                          Status = 422, Title = "Comment not found", Detail = $"CommentId {commentId}"
                       });
 
 
@@ -173,11 +173,5 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
 
         article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken);
         return article!;
-    }
-
-    public async Task<string[]> GetTags(CancellationToken cancellationToken = default)
-    {
-        var tags = await repository.GetTagsAsync(cancellationToken);
-        return tags.Select(x => x.Id).ToArray();
     }
 }

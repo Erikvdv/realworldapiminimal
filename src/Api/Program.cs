@@ -91,7 +91,7 @@ app.UseSerilogRequestLogging(options =>
 
 
 
-// app.UseProblemDetails();
+app.UseProblemDetails();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSwagger();

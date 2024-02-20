@@ -29,7 +29,7 @@ public static class ArticlesMapper
     public static ArticlesResponse MapFromArticles(ArticlesResponseDto articlesResponseDto)
     {
         var articles = articlesResponseDto.Articles
-            .Select(articleEntity => MapFromArticleEntity(articleEntity))
+            .Select(MapFromArticleEntity)
             .ToList();
         return new ArticlesResponse(articles, articlesResponseDto.ArticlesCount);
     }
