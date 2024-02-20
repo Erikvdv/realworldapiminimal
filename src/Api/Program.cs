@@ -47,8 +47,9 @@ builder.Services.AddSingleton<ITokenGenerator>(container =>
     return new TokenGenerator(cert);
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+
 builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
     .Configure<ILogger<CertificateProvider>>((o, logger) =>
     {
@@ -67,7 +68,7 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
 // for SQLite in memory a connection is provided rather than a connection string
 builder.Services.AddDbContext<ConduitContext>(options => { options.UseSqlite(connection); });
 
-builder.Services.AddProblemDetails((Hellang.Middleware.ProblemDetails.ProblemDetailsOptions options)  => {});
+ProblemDetailsExtensions.AddProblemDetails(builder.Services);
 builder.Services.ConfigureOptions<ProblemDetailsLogging>();
 builder.Services.AddCarter();
 
@@ -90,7 +91,7 @@ app.UseSerilogRequestLogging(options =>
 
 
 
-app.UseProblemDetails();
+// app.UseProblemDetails();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSwagger();
