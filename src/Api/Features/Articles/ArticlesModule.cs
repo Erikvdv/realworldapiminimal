@@ -32,7 +32,7 @@ public class ArticlesModule : ICarterModule
             .Produces(StatusCodes.Status401Unauthorized)
             .WithName("UpdateArticle");
 
-        authorizedGroup.MapDelete("/{slug}", DeleteArtice)
+        authorizedGroup.MapDelete("/{slug}", DeleteArticle)
             .Produces(StatusCodes.Status401Unauthorized)
             .WithName("DeleteArticle");
 
@@ -157,7 +157,7 @@ public class ArticlesModule : ICarterModule
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
     }
 
-    private static async Task<Ok> DeleteArtice(string slug,
+    private static async Task<Ok> DeleteArticle(string slug,
         IArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal)
     {
@@ -177,17 +177,15 @@ public class ArticlesModule : ICarterModule
         if (!MiniValidator.TryValidate(request,
                 out var errors))
             return TypedResults.ValidationProblem(errors);
-
-        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         var article = await articlesHandler.UpdateArticleAsync(request.Article,
             slug,
-            user!,
+            claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier)!,
             new CancellationToken());
         var result = ArticlesMapper.MapFromArticleEntity(article);
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
     }
 
-    private async Task<Results<Ok<ArticleEnvelope<ArticleResponse>>, ValidationProblem>> CreateArticle(
+    private static async Task<Results<Ok<ArticleEnvelope<ArticleResponse>>, ValidationProblem>> CreateArticle(
         ArticleEnvelope<NewArticleDto> request,
         IArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal)
@@ -204,7 +202,7 @@ public class ArticlesModule : ICarterModule
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
     }
 
-    private async Task<Ok<CommentsEnvelope<List<Comment>>>> GetComments(string slug,
+    private static async Task<Ok<CommentsEnvelope<List<Comment>>>> GetComments(string slug,
         IArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal)
     {
