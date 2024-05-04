@@ -30,7 +30,7 @@ public class ConduitRepository : IConduitRepository
             {
                 Status = 422,
                 Detail = "Cannot register user",
-                Errors = { new KeyValuePair<string, string[]>("Username", new[] { "Username not available" }) }
+                Errors = { new KeyValuePair<string, string[]>("Username", ["Username not available"]) }
             });
         }
 
@@ -40,7 +40,7 @@ public class ConduitRepository : IConduitRepository
             {
                 Status = 422,
                 Detail = "Cannot register user",
-                Errors = { new KeyValuePair<string, string[]>("Email", new[] { "Email address already in use" }) }
+                Errors = { new KeyValuePair<string, string[]>("Email", ["Email address already in use"]) }
             });
         }
 
@@ -145,7 +145,7 @@ public class ConduitRepository : IConduitRepository
             return article;
         }
 
-        var favoriteCount = await _context.ArticleFavorites.CountAsync(x => x.ArticleId == article.Id);
+        var favoriteCount = await _context.ArticleFavorites.CountAsync(x => x.ArticleId == article.Id, cancellationToken: cancellationToken);
         article.Favorited = favoriteCount > 0;
         article.FavoritesCount = favoriteCount;
         return article;

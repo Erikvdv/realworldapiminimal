@@ -11,36 +11,35 @@ public class ProfilesModule : ICarterModule
             .WithTags("Profile")
             .IncludeInOpenApi();
 
-        group.MapGet("{username}",
-                async Task<Ok<ProfilesEnvelope<ProfileDto>>>
-                    (string username, IProfilesHandler profilesHandler, ClaimsPrincipal claimsPrincipal) =>
-                {
-                    var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var result = await profilesHandler.GetAsync(username, user, new CancellationToken());
-                    return TypedResults.Ok(new ProfilesEnvelope<ProfileDto>(result));
-                })
+        group.MapGet("{username}", GetProfile)
             .WithName("GetProfile");
 
-        group.MapPost("{followUsername}/follow",
-                async Task<Ok<ProfilesEnvelope<ProfileDto>>>
-                    (string followUsername, IProfilesHandler profilesHandler, ClaimsPrincipal claimsPrincipal) =>
-                {
-                    var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var result =
-                        await profilesHandler.FollowProfileAsync(followUsername, user!, new CancellationToken());
-                    return TypedResults.Ok(new ProfilesEnvelope<ProfileDto>(result));
-                })
+        group.MapPost("{followUsername}/follow", FollowProfile)
             .WithName("FollowProfile");
 
-        group.MapDelete("{followUsername}/follow",
-                async Task<Ok<ProfilesEnvelope<ProfileDto>>>
-                    (string followUsername, IProfilesHandler profilesHandler, ClaimsPrincipal claimsPrincipal) =>
-                {
-                    var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var result =
-                        await profilesHandler.UnFollowProfileAsync(followUsername, user!, new CancellationToken());
-                    return TypedResults.Ok(new ProfilesEnvelope<ProfileDto>(result));
-                })
+        group.MapDelete("{followUsername}/follow", UnfollowProfile)
             .WithName("UnfollowProfile");
     }
+
+    private static async Task<Ok<ProfilesEnvelope<ProfileDto>>> GetProfile(string username, IProfilesHandler profilesHandler, ClaimsPrincipal claimsPrincipal)
+    {
+        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var result = await profilesHandler.GetAsync(username, user, new CancellationToken());
+        return TypedResults.Ok(new ProfilesEnvelope<ProfileDto>(result));
+    }
+    
+    private static async Task<Ok<ProfilesEnvelope<ProfileDto>>> FollowProfile(string followUsername, IProfilesHandler profilesHandler, ClaimsPrincipal claimsPrincipal)
+    {
+        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var result = await profilesHandler.FollowProfileAsync(followUsername, user!, new CancellationToken());
+        return TypedResults.Ok(new ProfilesEnvelope<ProfileDto>(result));
+    }
+    
+    private static async Task<Ok<ProfilesEnvelope<ProfileDto>>> UnfollowProfile(string followUsername, IProfilesHandler profilesHandler, ClaimsPrincipal claimsPrincipal)
+    {
+        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var result = await profilesHandler.UnFollowProfileAsync(followUsername, user!, new CancellationToken());
+        return TypedResults.Ok(new ProfilesEnvelope<ProfileDto>(result));
+    }
+    
 }
