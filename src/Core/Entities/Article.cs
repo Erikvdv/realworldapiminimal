@@ -3,33 +3,23 @@ using Realworlddotnet.Infrastructure.Utils;
 
 namespace Realworlddotnet.Core.Entities;
 
-public class Article
+public class Article(string title, string description, string body)
 {
-    public Article(string title, string description, string body)
-    {
-        Slug = title.GenerateSlug();
-        Title = title;
-        Description = description;
-        Body = body;
-        CreatedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
-    }
-
     public Guid Id { get; set; }
 
-    public string Slug { get; set; }
+    public string Slug { get; set; } = title.GenerateSlug();
 
-    public string Title { get; set; }
+    public string Title { get; set; } = title;
 
-    public string Description { get; set; }
+    public string Description { get; set; } = description;
 
-    public string Body { get; set; }
+    public string Body { get; set; } = body;
 
     public User Author { get; set; } = null!;
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public DateTime UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public bool Favorited { get; set; }
 

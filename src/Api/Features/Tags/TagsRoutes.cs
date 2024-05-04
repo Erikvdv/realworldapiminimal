@@ -1,6 +1,6 @@
 namespace Realworlddotnet.Api.Features.Tags;
 
-public class TagsModule : ICarterModule
+public class TagsRoutes : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {

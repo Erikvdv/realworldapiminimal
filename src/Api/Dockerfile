@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/microsoft-dotnet
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # copy csproj and restore as distinct layers
@@ -25,9 +25,8 @@ RUN pwd
 RUN dotnet publish "src/Api/Api.csproj" -c Release --no-build -o app
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
-RUN useradd -ms /bin/bash  dotnet
-USER dotnet
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+USER app
 WORKDIR /app
 COPY --from=publish /app ./
 

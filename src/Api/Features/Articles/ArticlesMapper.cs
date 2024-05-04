@@ -33,4 +33,9 @@ public static class ArticlesMapper
             .ToList();
         return new ArticlesResponse(articles, articlesResponseDto.ArticlesCount);
     }
+    
+    public static Core.Dto.ArticlesQuery MapFromQuery(ArticlesQuery query)
+    {
+        return new Core.Dto.ArticlesQuery(query.Tag, query.Author, query.Favorited, query.Limit, query.Offset);
+    }
 }

@@ -64,7 +64,8 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
     public Task<ArticlesResponseDto> GetArticlesAsync(ArticlesQuery query, string? username, bool isFeed,
         CancellationToken cancellationToken)
     {
-        return repository.GetArticlesAsync(query, username, false, cancellationToken);
+        var getArticlesQuery = ArticlesMapper.MapFromQuery(query);
+        return repository.GetArticlesAsync(getArticlesQuery, username, false, cancellationToken);
     }
 
 
@@ -92,7 +93,7 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
                           Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
                       });
 
-        var comment = new Core.Entities.Comment(commentDto.body, user.Username, article.Id);
+        var comment = new Core.Entities.Comment(commentDto.Body, user.Username, article.Id);
         repository.AddArticleComment(comment);
 
         await repository.SaveChangesAsync(cancellationToken);
@@ -109,8 +110,8 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
             });
 
         var comments = await repository.GetCommentsBySlugAsync(slug, username, cancellationToken);
-        var comment = comments.FirstOrDefault(x => x.Id == commentId) ??
-                      throw new ProblemDetailsException(new HttpValidationProblemDetails
+        var comment = comments.FirstOrDefault(x => x.Id == commentId) 
+                      ?? throw new ProblemDetailsException(new HttpValidationProblemDetails
                       {
                           Status = 422, Title = "Comment not found", Detail = $"CommentId {commentId}"
                       });
