@@ -42,7 +42,7 @@ builder.Services.AddSingleton<ITokenGenerator>(container =>
 {
     var logger = container.GetRequiredService<ILogger<CertificateProvider>>();
     var certificateProvider = new CertificateProvider(logger);
-    var cert = certificateProvider.LoadFromFile("identityserver_testing.pfx", "password");
+    var cert = certificateProvider.LoadFromFile("certificate.pfx", "password");
 
     return new TokenGenerator(cert);
 });
@@ -54,7 +54,7 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
     .Configure<ILogger<CertificateProvider>>((o, logger) =>
     {
         var certificateProvider = new CertificateProvider(logger);
-        var cert = certificateProvider.LoadFromFile("identityserver_testing.pfx", "password");
+        var cert = certificateProvider.LoadFromFile("certificate.pfx", "password");
 
         o.TokenValidationParameters = new TokenValidationParameters
         {
