@@ -2,7 +2,7 @@ using Realworlddotnet.Core.Dto;
 
 namespace Realworlddotnet.Api.Features.Articles;
 
-public class ArticlesModule : ICarterModule
+public class ArticlesRoutes : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {

@@ -2,7 +2,7 @@ using Realworlddotnet.Core.Dto;
 
 namespace Realworlddotnet.Api.Features.Profiles;
 
-public class ProfilesModule : ICarterModule
+public class ProfilesRoutes : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
