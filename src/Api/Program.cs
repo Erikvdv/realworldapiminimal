@@ -70,7 +70,6 @@ builder.Services.AddDbContext<ConduitContext>(options => { options.UseSqlite(con
 
 ProblemDetailsExtensions.AddProblemDetails(builder.Services);
 builder.Services.ConfigureOptions<ProblemDetailsLogging>();
-builder.Services.AddCarter();
 
 var app = builder.Build();
 
@@ -90,13 +89,17 @@ app.UseSerilogRequestLogging(options =>
 );
 
 
-
 app.UseProblemDetails();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.AddTagsEndpoints();
+app.AddProfilesEndpoints();
+app.AddArticlesEndpoints();
+app.AddUserEndpoints();
+
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "realworlddotnet v1"));
-app.MapCarter();
 
 
 try

@@ -16,7 +16,5 @@ global using Realworlddotnet.Infrastructure.Extensions.ProblemDetails;
 global using Realworlddotnet.Infrastructure.Utils;
 global using Realworlddotnet.Infrastructure.Utils.Interfaces;
 global using Serilog;
-global using Carter;
-global using Carter.OpenApi;
 global using Microsoft.AspNetCore.Http.HttpResults;
 global using MiniValidation;
