@@ -179,7 +179,7 @@ public class DataTests
                     false,
                     CancellationToken.None);
                 articles.ArticlesCount.Should().Be(1);
-                slug = articles.Articles.First().Slug;
+                slug = articles.Articles[0].Slug;
             }
 
             await using (var context = new ConduitContext(contextOptions))
@@ -208,7 +208,7 @@ public class DataTests
                 var comments = await repo.GetCommentsBySlugAsync(slug, username2, CancellationToken.None);
                 article!.Comments = comments;
                 article.Comments.Count.Should().Be(1);
-                var firstComment = article.Comments.First();
+                var firstComment = article.Comments[0];
                 firstComment.Username.Should().Be(username1);
                 firstComment.Author.Followers.Should().HaveCount(1);
                 repo.RemoveArticleComment(firstComment);

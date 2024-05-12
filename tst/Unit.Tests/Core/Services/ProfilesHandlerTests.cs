@@ -49,6 +49,6 @@ public class ProfilesHandlerTests
         var act = () => handler.GetAsync(username2, username1, CancellationToken.None);
         var result3 = await act.Should().ThrowAsync<ProblemDetailsException>();
         result3.Subject.First().Details.Status.Should().Be(422);
-        result3.Subject.First().Details.Detail.Should().Be("Profile not found");
+        result3.Subject.First().Details.Title.Should().Be("Profile not found");
     }
 }
