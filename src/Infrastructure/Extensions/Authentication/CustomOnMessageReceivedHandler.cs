@@ -8,7 +8,7 @@ public static class CustomOnMessageReceivedHandler
 {
     public static Task OnMessageReceived(MessageReceivedContext context)
     {
-        string authorization = context.Request.Headers["Authorization"];
+        string? authorization = context.Request.Headers.Authorization;
 
         // If no authorization header found, nothing to process further
         if (string.IsNullOrEmpty(authorization))
@@ -19,7 +19,7 @@ public static class CustomOnMessageReceivedHandler
 
         if (authorization.StartsWith("Token ", StringComparison.OrdinalIgnoreCase))
         {
-            context.Token = authorization.Substring("Token ".Length).Trim();
+            context.Token = authorization["Token ".Length..].Trim();
         }
 
         // If no token found, no further work possible

@@ -63,8 +63,8 @@ public class UserRoutes : ICarterModule
     {
         if (!MiniValidator.TryValidate(request, out var errors)) return Results.ValidationProblem(errors);
 
-        var username = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
-        var user = await userHandler.UpdateAsync(username!, request.User, new CancellationToken());
+        var username = claimsPrincipal.GetUsername();
+        var user = await userHandler.UpdateAsync(username, request.User, new CancellationToken());
         return Results.Ok(new UserEnvelope<UserDto>(user));
     }
     

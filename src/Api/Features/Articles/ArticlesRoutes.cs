@@ -76,7 +76,7 @@ public class ArticlesRoutes : ICarterModule
         IArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal)
     {
-        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = claimsPrincipal.GetUsername();
         var article = await articlesHandler.GetArticleBySlugAsync(slug,
             user,
             new CancellationToken());
@@ -89,10 +89,10 @@ public class ArticlesRoutes : ICarterModule
         IArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal)
     {
-        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = claimsPrincipal.GetUsername();
         await articlesHandler.RemoveCommentAsync(slug,
             commentId,
-            user!,
+            user,
             new CancellationToken());
         return TypedResults.Ok();
     }
@@ -106,9 +106,9 @@ public class ArticlesRoutes : ICarterModule
                 out var errors))
             return TypedResults.ValidationProblem(errors);
 
-        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = claimsPrincipal.GetUsername();
         var result = await articlesHandler.AddCommentAsync(slug,
-            user!,
+            user,
             request.Comment,
             new CancellationToken());
         var comment = CommentMapper.MapFromCommentEntity(result);
@@ -119,7 +119,7 @@ public class ArticlesRoutes : ICarterModule
         IArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal)
     {
-        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = claimsPrincipal.GetUsername();
         var articlesQuery = new ArticlesQuery(null,
             null,
             null,
@@ -137,9 +137,9 @@ public class ArticlesRoutes : ICarterModule
         IArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal)
     {
-        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = claimsPrincipal.GetUsername();
         var article = await articlesHandler.DeleteFavorite(slug,
-            user!,
+            user,
             new CancellationToken());
         var result = ArticlesMapper.MapFromArticleEntity(article);
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
@@ -149,9 +149,9 @@ public class ArticlesRoutes : ICarterModule
         IArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal)
     {
-        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = claimsPrincipal.GetUsername();
         var article = await articlesHandler.AddFavoriteAsync(slug,
-            user!,
+            user,
             new CancellationToken());
         var result = ArticlesMapper.MapFromArticleEntity(article);
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
@@ -161,9 +161,9 @@ public class ArticlesRoutes : ICarterModule
         IArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal)
     {
-        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = claimsPrincipal.GetUsername();
         await articlesHandler.DeleteArticleAsync(slug,
-            user!,
+            user,
             new CancellationToken());
         return TypedResults.Ok();
     }
@@ -179,7 +179,7 @@ public class ArticlesRoutes : ICarterModule
             return TypedResults.ValidationProblem(errors);
         var article = await articlesHandler.UpdateArticleAsync(request.Article,
             slug,
-            claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier)!,
+            claimsPrincipal.GetUsername(),
             new CancellationToken());
         var result = ArticlesMapper.MapFromArticleEntity(article);
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
@@ -194,9 +194,9 @@ public class ArticlesRoutes : ICarterModule
                 out var errors))
             return TypedResults.ValidationProblem(errors);
 
-        var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = claimsPrincipal.GetUsername();
         var article = await articlesHandler.CreateArticleAsync(request.Article,
-            user!,
+            user,
             new CancellationToken());
         var result = ArticlesMapper.MapFromArticleEntity(article);
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
