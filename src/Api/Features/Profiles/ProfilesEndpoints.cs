@@ -1,4 +1,4 @@
-using Realworlddotnet.Core.Dto;
+﻿using Realworlddotnet.Core.Dto;
 using Realworlddotnet.Infrastructure.Extensions.OpenApi;
 
 namespace Realworlddotnet.Api.Features.Profiles;

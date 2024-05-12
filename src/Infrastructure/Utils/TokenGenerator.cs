@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
@@ -20,7 +20,7 @@ public class TokenGenerator : ITokenGenerator
 
     public string CreateToken(string username)
     {
-        var claims = new[] {new Claim(JwtRegisteredClaimNames.Sub, username)};
+        var claims = new[] { new Claim(JwtRegisteredClaimNames.Sub, username) };
 
         var handler = new JwtSecurityTokenHandler();
         var token = new JwtSecurityToken(

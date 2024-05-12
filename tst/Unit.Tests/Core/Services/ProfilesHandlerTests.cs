@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -20,7 +20,7 @@ public class ProfilesHandlerTests
         const string username1 = "EvdV";
         const string username2 = "AcM";
 
-        var profileUser = new User(new NewUserDto(username1, "email1", "pw1")) {Bio = "Bio1", Image = "image1"};
+        var profileUser = new User(new NewUserDto(username1, "email1", "pw1")) { Bio = "Bio1", Image = "image1" };
 
         var repo = new Mock<IConduitRepository>();
         repo.Setup(x => x.GetUserByUsernameAsync(

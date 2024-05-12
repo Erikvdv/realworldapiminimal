@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 using Realworlddotnet.Api.Features.Articles;
 using Realworlddotnet.Api.Features.Profiles;
 using Realworlddotnet.Api.Features.Tags;
@@ -28,7 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SupportNonNullableReferenceTypes();
-    c.SwaggerDoc("v1", new OpenApiInfo {Title = "realworlddotnet", Version = "v1"});
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "realworlddotnet", Version = "v1" });
 });
 
 builder.Services.AddScoped<IConduitRepository, ConduitRepository>();
@@ -62,7 +62,7 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
             ValidateIssuer = false,
             IssuerSigningKey = new RsaSecurityKey(cert.GetRSAPublicKey())
         };
-        o.Events = new JwtBearerEvents {OnMessageReceived = CustomOnMessageReceivedHandler.OnMessageReceived};
+        o.Events = new JwtBearerEvents { OnMessageReceived = CustomOnMessageReceivedHandler.OnMessageReceived };
     });
 
 // for SQLite in memory a connection is provided rather than a connection string

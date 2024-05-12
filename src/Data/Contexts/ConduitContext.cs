@@ -1,14 +1,14 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Realworlddotnet.Core.Entities;
 
 namespace Realworlddotnet.Data.Contexts;
 
 public class ConduitContext(DbContextOptions<ConduitContext> options) : DbContext(options)
 {
-    public DbSet<User> Users { get; set; } 
+    public DbSet<User> Users { get; set; }
     public DbSet<Article> Articles { get; set; }
-    public DbSet<Comment> Comments { get; set; } 
-    public DbSet<Tag> Tags { get; set; } 
+    public DbSet<Comment> Comments { get; set; }
+    public DbSet<Tag> Tags { get; set; }
 
     public DbSet<UserLink> FollowedUsers { get; set; }
     public DbSet<ArticleFavorite> ArticleFavorites { get; set; }
@@ -34,7 +34,7 @@ public class ConduitContext(DbContextOptions<ConduitContext> options) : DbContex
 
         modelBuilder.Entity<ArticleFavorite>(entity =>
         {
-            entity.HasKey(e => new {e.ArticleId, UserId = e.Username});
+            entity.HasKey(e => new { e.ArticleId, UserId = e.Username });
             entity.HasOne(x => x.Article).WithMany(x => x.ArticleFavorites)
                 .HasForeignKey(x => x.ArticleId);
             entity.HasOne(x => x.User).WithMany(x => x.ArticleFavorites);
@@ -52,7 +52,7 @@ public class ConduitContext(DbContextOptions<ConduitContext> options) : DbContex
 
         modelBuilder.Entity<UserLink>(entity =>
         {
-            entity.HasKey(x => new {x.Username, x.FollowerUsername});
+            entity.HasKey(x => new { x.Username, x.FollowerUsername });
             entity.HasOne(x => x.User)
                 .WithMany(x => x.Followers)
                 .HasForeignKey(x => x.Username);

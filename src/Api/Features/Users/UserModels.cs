@@ -1,3 +1,3 @@
-namespace Realworlddotnet.Api.Features.Users;
+﻿namespace Realworlddotnet.Api.Features.Users;
 
 public record UserEnvelope<T>([Required] T User);

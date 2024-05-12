@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Realworlddotnet.Core.Entities;
 
 namespace Realworlddotnet.Core.Dto;

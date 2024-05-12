@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Realworlddotnet.Infrastructure</RootNamespace>
     <Nullable>enable</Nullable>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup>

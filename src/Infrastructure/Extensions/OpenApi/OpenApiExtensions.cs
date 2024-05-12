@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.OpenApi.Models;
 
@@ -10,7 +10,7 @@ public static class OpenApiExtensions
     {
         builder.WithOpenApi(x =>
         {
-            var response = new OpenApiResponse {Description = "Unauthenticated"};
+            var response = new OpenApiResponse { Description = "Unauthenticated" };
             x.Responses.Add("401", response);
             return x;
         });

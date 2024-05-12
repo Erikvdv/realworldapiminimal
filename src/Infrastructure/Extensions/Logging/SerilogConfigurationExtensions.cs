@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
@@ -28,6 +28,7 @@ public static class SerilogConfigurationExtensions
         return loggerConfiguration;
     }
 
+    [Obsolete]
     public static LoggerConfiguration AddApplicationInsightsLogging(
         this LoggerConfiguration loggerConfiguration,
         IServiceProvider services,
@@ -53,7 +54,7 @@ public static class SerilogConfigurationExtensions
                     return quickPulseProcessor;
                 })
                 .Build();
-            var quickPulse = new QuickPulseTelemetryModule {AuthenticationApiKey = authenticationApiKey};
+            var quickPulse = new QuickPulseTelemetryModule { AuthenticationApiKey = authenticationApiKey };
             quickPulse.Initialize(config);
 
             quickPulse.RegisterTelemetryProcessor(quickPulseProcessor);

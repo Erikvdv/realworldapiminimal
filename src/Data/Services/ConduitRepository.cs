@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -23,7 +23,7 @@ public class ConduitRepository(ConduitContext context) : IConduitRepository
             {
                 Status = 422,
                 Detail = "Cannot register user",
-                Errors = {new KeyValuePair<string, string[]>("Username", ["Username not available"])}
+                Errors = { new KeyValuePair<string, string[]>("Username", ["Username not available"]) }
             });
         }
 
@@ -33,7 +33,7 @@ public class ConduitRepository(ConduitContext context) : IConduitRepository
             {
                 Status = 422,
                 Detail = "Cannot register user",
-                Errors = {new KeyValuePair<string, string[]>("Email", ["Email address already in use"])}
+                Errors = { new KeyValuePair<string, string[]>("Email", ["Email address already in use"]) }
             });
         }
 
