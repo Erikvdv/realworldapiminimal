@@ -6,6 +6,7 @@ public class UserLink(string username, string followerUsername)
 {
     [MaxLength(100)]
     public string Username { get; set; } = username;
+
     [MaxLength(100)]
     public string FollowerUsername { get; set; } = followerUsername;
 

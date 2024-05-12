@@ -16,8 +16,7 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
                 newArticle.Title,
                 newArticle.Description,
                 newArticle.Body
-            )
-        { Author = user, Tags = tags.ToList() }
+            ) { Author = user, Tags = tags.ToList() }
             ;
 
         repository.AddArticle(article);
@@ -50,9 +49,7 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
         var article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
                       throw new ProblemDetailsException(new HttpValidationProblemDetails
                       {
-                          Status = 422,
-                          Title = "Article not found",
-                          Detail = $"Slug: {slug}"
+                          Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
                       });
 
         if (username != article.Author.Username)
@@ -77,9 +74,7 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
         var article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
                       throw new ProblemDetailsException(new HttpValidationProblemDetails
                       {
-                          Status = 422,
-                          Title = "Article not found",
-                          Detail = $"Slug: {slug}"
+                          Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
                       });
 
         var comments = await repository.GetCommentsBySlugAsync(slug, username, cancellationToken);
@@ -95,9 +90,7 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
         var article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
                       throw new ProblemDetailsException(new HttpValidationProblemDetails
                       {
-                          Status = 422,
-                          Title = "Article not found",
-                          Detail = $"Slug: {slug}"
+                          Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
                       });
 
         var comment = new Core.Entities.Comment(commentDto.Body, user.Username, article.Id);
@@ -113,18 +106,14 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
         _ = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
             throw new ProblemDetailsException(new HttpValidationProblemDetails
             {
-                Status = 422,
-                Title = "Article not found",
-                Detail = $"Slug: {slug}"
+                Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
             });
 
         var comments = await repository.GetCommentsBySlugAsync(slug, username, cancellationToken);
         var comment = comments.Find(x => x.Id == commentId)
                       ?? throw new ProblemDetailsException(new HttpValidationProblemDetails
                       {
-                          Status = 422,
-                          Title = "Comment not found",
-                          Detail = $"CommentId {commentId}"
+                          Status = 422, Title = "Comment not found", Detail = $"CommentId {commentId}"
                       });
 
 
@@ -132,9 +121,7 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
         {
             throw new ProblemDetailsException(new HttpValidationProblemDetails
             {
-                Status = 422,
-                Title = "User does not own Article",
-                Detail = $"User: {username},  Slug: {slug}"
+                Status = 422, Title = "User does not own Article", Detail = $"User: {username},  Slug: {slug}"
             });
         }
 
@@ -155,9 +142,7 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
         var article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
                       throw new ProblemDetailsException(new HttpValidationProblemDetails
                       {
-                          Status = 422,
-                          Title = "Article not found",
-                          Detail = $"Slug: {slug}"
+                          Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
                       });
 
         var articleFavorite = await repository.GetArticleFavoriteAsync(user.Username, article.Id);
@@ -178,9 +163,7 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
         var article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
                       throw new ProblemDetailsException(new HttpValidationProblemDetails
                       {
-                          Status = 422,
-                          Title = "Article not found",
-                          Detail = $"Slug: {slug}"
+                          Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
                       });
 
         var articleFavorite = await repository.GetArticleFavoriteAsync(user.Username, article.Id);
