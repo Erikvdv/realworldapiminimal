@@ -12,24 +12,23 @@ public class UserRoutes : ICarterModule
             .IncludeInOpenApi();
         
         var usersGroup = app.MapGroup("users")
-            .RequireAuthorization()
             .WithTags("User")
             .IncludeInOpenApi();
         
-        userGroup.MapGet("/user", GetUser)
+        userGroup.MapGet("/", GetUser)
             .Produces<UserEnvelope<UserDto>>()
             .WithName("GetUser");
 
-        userGroup.MapPut("/user", UpdateUser)
+        userGroup.MapPut("/", UpdateUser)
             .Produces<UserEnvelope<UserDto>>()
             .WithName("UpdateUser");
 
-        usersGroup.MapPost("/users",
+        usersGroup.MapPost("/",
                 CreateUser)
             .Produces<UserEnvelope<UserDto>>()
             .WithName("CreateUser");
 
-        usersGroup.MapPost("/users/login",
+        usersGroup.MapPost("/login",
                 LoginUser)
             .Produces<UnprocessableEntity<ValidationProblem>>(422)
             .WithName("LoginUser")
