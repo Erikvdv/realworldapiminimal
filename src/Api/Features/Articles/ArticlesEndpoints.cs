@@ -1,4 +1,3 @@
-using Microsoft.OpenApi.Models;
 using Realworlddotnet.Core.Dto;
 using Realworlddotnet.Infrastructure.Extensions.OpenApi;
 
@@ -16,7 +15,7 @@ public static class ArticlesEndpoints
         unAuthorizedGroup.MapGet("/", GetArticles);
         unAuthorizedGroup.MapGet("/{slug}", GetArticleBySlug);
         unAuthorizedGroup.MapGet("/{slug}/comments", GetComments);
-        
+
         authorizedGroup.MapPost("/", CreateArticle);
         authorizedGroup.MapPut("/{slug}", UpdateArticle);
         authorizedGroup.MapDelete("/{slug}", DeleteArticle);
@@ -38,7 +37,7 @@ public static class ArticlesEndpoints
         var result = ArticlesMapper.MapFromArticles(response);
         return TypedResults.Ok(result);
     }
-    
+
     private static async Task<Ok<ArticleEnvelope<ArticleResponse>>> GetArticleBySlug(
         string slug,
         IArticlesHandler articlesHandler,
@@ -50,7 +49,7 @@ public static class ArticlesEndpoints
         var result = ArticlesMapper.MapFromArticleEntity(article);
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
     }
-    
+
     private static async Task<Ok> DeleteComment(
         string slug,
         int commentId,
@@ -70,7 +69,9 @@ public static class ArticlesEndpoints
         ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
     {
         if (!MiniValidator.TryValidate(request, out var errors))
+        {
             return TypedResults.ValidationProblem(errors);
+        }
 
         var user = claimsPrincipal.GetUsername();
         var result = await articlesHandler.AddCommentAsync(slug, user, request.Comment, cancellationToken);
@@ -106,7 +107,7 @@ public static class ArticlesEndpoints
     private static async Task<Ok<ArticleEnvelope<ArticleResponse>>> FavoriteBySlug(
         string slug,
         IArticlesHandler articlesHandler,
-        ClaimsPrincipal claimsPrincipal, 
+        ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
         var user = claimsPrincipal.GetUsername();
@@ -130,12 +131,14 @@ public static class ArticlesEndpoints
         string slug,
         ArticleEnvelope<ArticleUpdateDto> request,
         IArticlesHandler articlesHandler,
-        ClaimsPrincipal claimsPrincipal, 
+        ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
         if (!MiniValidator.TryValidate(request, out var errors))
+        {
             return TypedResults.ValidationProblem(errors);
-        
+        }
+
         var user = claimsPrincipal.GetUsername();
         var article = await articlesHandler.UpdateArticleAsync(request.Article, slug, user, cancellationToken);
         var result = ArticlesMapper.MapFromArticleEntity(article);
@@ -149,7 +152,9 @@ public static class ArticlesEndpoints
         CancellationToken cancellationToken)
     {
         if (!MiniValidator.TryValidate(request, out var errors))
+        {
             return TypedResults.ValidationProblem(errors);
+        }
 
         var user = claimsPrincipal.GetUsername();
         var article = await articlesHandler.CreateArticleAsync(request.Article, user, cancellationToken);
@@ -159,8 +164,8 @@ public static class ArticlesEndpoints
 
     private static async Task<Ok<CommentsEnvelope<List<Comment>>>> GetComments(
         string slug,
-        IArticlesHandler articlesHandler, 
-        ClaimsPrincipal claimsPrincipal, 
+        IArticlesHandler articlesHandler,
+        ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
         var user = claimsPrincipal.GetUsername();

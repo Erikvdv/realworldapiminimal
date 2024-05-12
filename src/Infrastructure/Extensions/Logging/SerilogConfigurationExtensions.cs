@@ -18,12 +18,13 @@ public static class SerilogConfigurationExtensions
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
             .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Warning)
-            
             .Enrich.FromLogContext()
             .Enrich.WithMachineName()
             .Enrich.WithThreadId()
             .Enrich.WithProperty("ApplicationName", appName)
-            .WriteTo.Async(a => a.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {UserId} {Message:lj}{NewLine}{Exception}"));
+            .WriteTo.Async(a =>
+                a.Console(
+                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {UserId} {Message:lj}{NewLine}{Exception}"));
         return loggerConfiguration;
     }
 
@@ -52,7 +53,7 @@ public static class SerilogConfigurationExtensions
                     return quickPulseProcessor;
                 })
                 .Build();
-            var quickPulse = new QuickPulseTelemetryModule { AuthenticationApiKey = authenticationApiKey };
+            var quickPulse = new QuickPulseTelemetryModule {AuthenticationApiKey = authenticationApiKey};
             quickPulse.Initialize(config);
 
             quickPulse.RegisterTelemetryProcessor(quickPulseProcessor);

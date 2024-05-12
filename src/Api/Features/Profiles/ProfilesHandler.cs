@@ -29,13 +29,17 @@ public class ProfilesHandler(IConduitRepository repository) : IProfilesHandler
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(username))
+        {
             throw new ProblemDetailsException(422, "Not logged in");
-        
+        }
+
         var profileUser = await repository.GetUserByUsernameAsync(profileUsername, cancellationToken);
 
         if (profileUser is null)
+        {
             throw new ProblemDetailsException(422, "Profile not found");
-        
+        }
+
 
         repository.Follow(profileUsername, username);
         await repository.SaveChangesAsync(cancellationToken);
@@ -47,8 +51,10 @@ public class ProfilesHandler(IConduitRepository repository) : IProfilesHandler
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(username))
+        {
             throw new ProblemDetailsException(422, "Not logged in");
-        
+        }
+
         var profileUser = await repository.GetUserByUsernameAsync(profileUsername, cancellationToken);
 
         if (profileUser is null)

@@ -20,7 +20,7 @@ public class TokenGenerator : ITokenGenerator
 
     public string CreateToken(string username)
     {
-        var claims = new[] { new Claim(JwtRegisteredClaimNames.Sub, username) };
+        var claims = new[] {new Claim(JwtRegisteredClaimNames.Sub, username)};
 
         var handler = new JwtSecurityTokenHandler();
         var token = new JwtSecurityToken(

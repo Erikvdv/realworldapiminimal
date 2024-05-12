@@ -39,7 +39,7 @@ public class ConduitContext : DbContext
 
         modelBuilder.Entity<ArticleFavorite>(entity =>
         {
-            entity.HasKey(e => new { e.ArticleId, UserId = e.Username });
+            entity.HasKey(e => new {e.ArticleId, UserId = e.Username});
             entity.HasOne(x => x.Article).WithMany(x => x.ArticleFavorites)
                 .HasForeignKey(x => x.ArticleId);
             entity.HasOne(x => x.User).WithMany(x => x.ArticleFavorites);
@@ -57,7 +57,7 @@ public class ConduitContext : DbContext
 
         modelBuilder.Entity<UserLink>(entity =>
         {
-            entity.HasKey(x => new { x.Username, x.FollowerUsername });
+            entity.HasKey(x => new {x.Username, x.FollowerUsername});
             entity.HasOne(x => x.User)
                 .WithMany(x => x.Followers)
                 .HasForeignKey(x => x.Username);
