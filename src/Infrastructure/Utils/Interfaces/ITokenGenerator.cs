@@ -1,4 +1,4 @@
-namespace Realworlddotnet.Infrastructure.Utils.Interfaces;
+﻿namespace Realworlddotnet.Infrastructure.Utils.Interfaces;
 
 public interface ITokenGenerator
 {

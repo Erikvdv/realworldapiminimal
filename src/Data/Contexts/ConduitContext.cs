@@ -1,22 +1,17 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Realworlddotnet.Core.Entities;
 
 namespace Realworlddotnet.Data.Contexts;
 
-public class ConduitContext : DbContext
+public class ConduitContext(DbContextOptions<ConduitContext> options) : DbContext(options)
 {
-    public ConduitContext(DbContextOptions<ConduitContext> options) : base(options)
-    {
-    }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Article> Articles { get; set; }
+    public DbSet<Comment> Comments { get; set; }
+    public DbSet<Tag> Tags { get; set; }
 
-    public DbSet<User> Users { get; set; } = null!;
-    public DbSet<Article> Articles { get; set; } = null!;
-    public DbSet<Comment> Comments { get; set; } = null!;
-    public DbSet<Tag> Tags { get; set; } = null!;
-
-    public DbSet<UserLink> FollowedUsers { get; set; } = null!;
-
-    public DbSet<ArticleFavorite> ArticleFavorites { get; set; } = null!;
+    public DbSet<UserLink> FollowedUsers { get; set; }
+    public DbSet<ArticleFavorite> ArticleFavorites { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

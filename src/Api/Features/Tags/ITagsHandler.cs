@@ -1,4 +1,4 @@
-namespace Realworlddotnet.Api.Features.Tags;
+﻿namespace Realworlddotnet.Api.Features.Tags;
 
 public interface ITagsHandler
 {

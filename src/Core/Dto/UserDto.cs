@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Realworlddotnet.Core.Dto;
 
@@ -9,8 +9,8 @@ public record LoginUserDto([Required] string Email, [Required] string Password);
 /// <summary>
 ///     At lease one of the items should be not null
 /// </summary>
-public record UpdatedUserDto
-    (string? Username, string? Email, string? Bio, string? Image, string? Password) : IValidatableObject
+public record UpdatedUserDto(string? Username, string? Email, string? Bio, string? Image, string? Password)
+    : IValidatableObject
 {
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {

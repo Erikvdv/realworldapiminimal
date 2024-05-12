@@ -1,4 +1,4 @@
-using Realworlddotnet.Core.Dto;
+﻿using Realworlddotnet.Core.Dto;
 
 namespace Realworlddotnet.Api.Features.Articles;
 
@@ -20,7 +20,7 @@ public static class ArticlesMapper
                 author.Username,
                 author.Image,
                 author.Bio,
-                author.Followers.Any()),
+                author.Followers.Count != 0),
             article.Favorited,
             article.FavoritesCount);
         return result;
@@ -33,7 +33,7 @@ public static class ArticlesMapper
             .ToList();
         return new ArticlesResponse(articles, articlesResponseDto.ArticlesCount);
     }
-    
+
     public static Core.Dto.ArticlesQuery MapFromQuery(ArticlesQuery query)
     {
         return new Core.Dto.ArticlesQuery(query.Tag, query.Author, query.Favorited, query.Limit, query.Offset);

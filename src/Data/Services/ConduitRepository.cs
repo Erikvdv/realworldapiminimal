@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -101,7 +101,7 @@ public class ConduitRepository(ConduitContext context) : IConduitRepository
 
         if (isFeed)
         {
-            query = query.Where(x => x.Author.Followers.Any());
+            query = query.Where(x => x.Author.Followers.Count != 0);
         }
 
         query = query.OrderByDescending(x => x.UpdatedAt);
@@ -119,7 +119,7 @@ public class ConduitRepository(ConduitContext context) : IConduitRepository
         {
             article.FavoritesCount = article.ArticleFavorites.Count;
         }
-        
+
         return new ArticlesResponseDto(page, total);
     }
 
@@ -143,7 +143,8 @@ public class ConduitRepository(ConduitContext context) : IConduitRepository
             return article;
         }
 
-        var favoriteCount = await context.ArticleFavorites.CountAsync(x => x.ArticleId == article.Id, cancellationToken: cancellationToken);
+        var favoriteCount =
+            await context.ArticleFavorites.CountAsync(x => x.ArticleId == article.Id, cancellationToken);
         article.Favorited = favoriteCount > 0;
         article.FavoritesCount = favoriteCount;
         return article;

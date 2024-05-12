@@ -1,7 +1,9 @@
-namespace Realworlddotnet.Api.Features.Articles;
+﻿namespace Realworlddotnet.Api.Features.Articles;
 
 public record ArticleEnvelope<T>(T Article);
+
 public record CommentEnvelope<T>(T Comment);
+
 public record CommentsEnvelope<T>(T Comments);
 
 public record Comment(
@@ -34,10 +36,6 @@ public record NewArticleDto(
     [Required] string Description,
     [Required] string Body,
     [Required] IEnumerable<string> TagList);
-
-
-
-
 
 public record ArticlesQuery(string? Tag, string? Author, string? Favorited, int Limit = 20, int Offset = 0);
 

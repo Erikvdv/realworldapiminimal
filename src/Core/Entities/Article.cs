@@ -1,3 +1,4 @@
+﻿using System.ComponentModel.DataAnnotations;
 using Realworlddotnet.Core.Dto;
 using Realworlddotnet.Infrastructure.Utils;
 
@@ -7,12 +8,16 @@ public class Article(string title, string description, string body)
 {
     public Guid Id { get; set; }
 
+    [MaxLength(45)]
     public string Slug { get; set; } = title.GenerateSlug();
 
+    [MaxLength(200)]
     public string Title { get; set; } = title;
 
+    [MaxLength(500)]
     public string Description { get; set; } = description;
 
+    [MaxLength(2000)]
     public string Body { get; set; } = body;
 
     public User Author { get; set; } = null!;

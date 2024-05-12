@@ -11,7 +11,7 @@ public static class CommentMapper
             commentEntity.Author.Username,
             commentEntity.Author.Image,
             commentEntity.Author.Bio,
-            commentEntity.Author.Followers.Any());
+            commentEntity.Author.Followers.Count != 0);
         return new CommentModel(commentEntity.Id,
             commentEntity.CreatedAt,
             commentEntity.UpdatedAt,

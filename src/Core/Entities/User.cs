@@ -1,3 +1,4 @@
+﻿using System.ComponentModel.DataAnnotations;
 using Realworlddotnet.Core.Dto;
 
 namespace Realworlddotnet.Core.Entities;
@@ -15,14 +16,19 @@ public class User
         Email = newUser.Email;
     }
 
+    [MaxLength(100)]
     public string Username { get; set; } = default!;
 
+    [MaxLength(100)]
     public string Email { get; set; } = default!;
 
+    [MaxLength(100)]
     public string Password { get; set; } = default!;
 
+    [MaxLength(300)]
     public string Bio { get; set; } = string.Empty;
 
+    [MaxLength(200)]
     public string Image { get; set; } = string.Empty;
 
     public ICollection<ArticleFavorite>? ArticleFavorites { get; set; }

@@ -4,31 +4,32 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Realworlddotnet.Infrastructure</RootNamespace>
     <Nullable>enable</Nullable>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
   </ItemGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.22.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.PerfCounterCollector" Version="2.22.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4" />
+    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.0"/>
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.22.0"/>
+    <PackageReference Include="Microsoft.ApplicationInsights.PerfCounterCollector" Version="2.22.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2"/>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
-    <PackageReference Include="Microsoft.OpenApi" Version="1.4.3" />
-    <PackageReference Include="Serilog" Version="3.1.1" />
-    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2"/>
+    <PackageReference Include="Microsoft.OpenApi" Version="1.4.3"/>
+    <PackageReference Include="Serilog" Version="3.1.1"/>
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0"/>
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0"/>
-    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0"/>
     <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0"/>
-    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
-    <PackageReference Update="SonarAnalyzer.CSharp" Version="9.20.0.85982" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1"/>
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="9.20.0.85982"/>
   </ItemGroup>
 
 </Project>

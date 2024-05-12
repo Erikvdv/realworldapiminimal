@@ -1,4 +1,4 @@
-using Hellang.Middleware.ProblemDetails;
+﻿using Hellang.Middleware.ProblemDetails;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

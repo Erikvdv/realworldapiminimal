@@ -1,10 +1,9 @@
-using Microsoft.OpenApi.Models;
-using Realworlddotnet.Core.Dto;
+﻿using Realworlddotnet.Core.Dto;
 using Realworlddotnet.Infrastructure.Extensions.OpenApi;
 
 namespace Realworlddotnet.Api.Features.Profiles;
 
-public static class ProfilesEndpoints 
+public static class ProfilesEndpoints
 {
     public static void AddProfilesEndpoints(this IEndpointRouteBuilder app)
     {
@@ -16,8 +15,8 @@ public static class ProfilesEndpoints
     }
 
     private static async Task<Ok<ProfilesEnvelope<ProfileDto>>> GetProfile(
-        string username, 
-        IProfilesHandler profilesHandler, 
+        string username,
+        IProfilesHandler profilesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -25,10 +24,10 @@ public static class ProfilesEndpoints
         var result = await profilesHandler.GetAsync(username, user, cancellationToken);
         return TypedResults.Ok(new ProfilesEnvelope<ProfileDto>(result));
     }
-    
+
     private static async Task<Ok<ProfilesEnvelope<ProfileDto>>> FollowProfile(
-        string followUsername, 
-        IProfilesHandler profilesHandler, 
+        string followUsername,
+        IProfilesHandler profilesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -36,10 +35,10 @@ public static class ProfilesEndpoints
         var result = await profilesHandler.FollowProfileAsync(followUsername, user, cancellationToken);
         return TypedResults.Ok(new ProfilesEnvelope<ProfileDto>(result));
     }
-    
+
     private static async Task<Ok<ProfilesEnvelope<ProfileDto>>> UnfollowProfile(
-        string followUsername, 
-        IProfilesHandler profilesHandler, 
+        string followUsername,
+        IProfilesHandler profilesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -47,5 +46,4 @@ public static class ProfilesEndpoints
         var result = await profilesHandler.UnFollowProfileAsync(followUsername, user, cancellationToken);
         return TypedResults.Ok(new ProfilesEnvelope<ProfileDto>(result));
     }
-    
 }

@@ -1,4 +1,4 @@
-using Realworlddotnet.Core.Dto;
+﻿using Realworlddotnet.Core.Dto;
 using Realworlddotnet.Core.Repositories;
 
 namespace Realworlddotnet.Api.Features.Articles;
@@ -110,7 +110,7 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
             });
 
         var comments = await repository.GetCommentsBySlugAsync(slug, username, cancellationToken);
-        var comment = comments.Find(x => x.Id == commentId) 
+        var comment = comments.Find(x => x.Id == commentId)
                       ?? throw new ProblemDetailsException(new HttpValidationProblemDetails
                       {
                           Status = 422, Title = "Comment not found", Detail = $"CommentId {commentId}"
@@ -118,10 +118,12 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
 
 
         if (comment.Author.Username != username)
+        {
             throw new ProblemDetailsException(new HttpValidationProblemDetails
             {
                 Status = 422, Title = "User does not own Article", Detail = $"User: {username},  Slug: {slug}"
             });
+        }
 
         comments.Remove(comment);
         await repository.SaveChangesAsync(cancellationToken);
