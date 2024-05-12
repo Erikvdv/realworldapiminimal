@@ -24,8 +24,7 @@ Consisting of the following layers:
 
 Build using the following features:
 
-- Minimal api's (Using Carter Modules for code structuring)
-- the new WebApplication.CreateBuilder(args)
+- Minimal api's
 - file scoped namespaces
 - Entity Framework Core with SQLite db
 - serilog for logging
