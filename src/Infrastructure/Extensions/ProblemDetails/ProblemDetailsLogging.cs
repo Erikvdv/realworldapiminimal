@@ -4,17 +4,10 @@ using Microsoft.Extensions.Options;
 
 namespace Realworlddotnet.Infrastructure.Extensions.ProblemDetails;
 
-public class ProblemDetailsLogging : IPostConfigureOptions<ProblemDetailsOptions>
+public class ProblemDetailsLogging(ILogger<ProblemDetailsLogging> logger) : IPostConfigureOptions<ProblemDetailsOptions>
 {
-    private readonly ILogger<ProblemDetailsLogging> _logger;
-
-    public ProblemDetailsLogging(ILogger<ProblemDetailsLogging> logger)
+    public void PostConfigure(string? name, ProblemDetailsOptions options)
     {
-        _logger = logger;
-    }
-
-    public void PostConfigure(string name, ProblemDetailsOptions options)
-    {
-        options.OnBeforeWriteDetails += (_, problem) => { _logger.LogInformation("{@Problem}", problem); };
+        options.OnBeforeWriteDetails += (_, problem) => { logger.LogInformation("{@Problem}", problem); };
     }
 }
