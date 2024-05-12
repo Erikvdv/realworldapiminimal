@@ -4,17 +4,12 @@ public class TagsRoutes : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/tags",
-                GetTags)
-            .Produces<TagsEnvelope<string[]>>()
-            .WithTags("Tags")
-            .WithName("GetTags")
-            .IncludeInOpenApi();
+        app.MapGet("/tags", GetTags).IncludeInOpenApi();
     }
 
-    private static async Task<TagsEnvelope<string[]>> GetTags(ITagsHandler articlesHandler)
+    private static async Task<TagsEnvelope<string[]>> GetTags(ITagsHandler articlesHandler, CancellationToken cancellationToken)
     {
-        var tags = await articlesHandler.GetTagsAsync(new CancellationToken());
+        var tags = await articlesHandler.GetTagsAsync(cancellationToken);
         return new TagsEnvelope<string[]>(tags);
     }
 }

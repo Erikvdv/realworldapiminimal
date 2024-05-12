@@ -15,63 +15,58 @@ public class UserRoutes : ICarterModule
             .WithTags("User")
             .IncludeInOpenApi();
         
-        userGroup.MapGet("/", GetUser)
-            .Produces<UserEnvelope<UserDto>>()
-            .WithName("GetUser");
-
-        userGroup.MapPut("/", UpdateUser)
-            .Produces<UserEnvelope<UserDto>>()
-            .WithName("UpdateUser");
-
-        usersGroup.MapPost("/",
-                CreateUser)
-            .Produces<UserEnvelope<UserDto>>()
-            .WithName("CreateUser");
-
-        usersGroup.MapPost("/login",
-                LoginUser)
-            .Produces<UnprocessableEntity<ValidationProblem>>(422)
-            .WithName("LoginUser")
-            .ProducesValidationProblem();
+        userGroup.MapGet("/", GetUser);
+        userGroup.MapPut("/", UpdateUser);
+        usersGroup.MapPost("/", CreateUser);
+        usersGroup.MapPost("/login", LoginUser);
     }
 
-    private static async Task<Results<ValidationProblem, Ok<UserEnvelope<UserDto>>>> LoginUser(IUserHandler userHandler,
-        UserEnvelope<LoginUserDto> request)
+    private static async Task<Results<ValidationProblem, Ok<UserEnvelope<UserDto>>>> LoginUser(
+        IUserHandler userHandler,
+        UserEnvelope<LoginUserDto> request,
+        CancellationToken cancellationToken)
     {
         if (!MiniValidator.TryValidate(request, out var errors))
-        {
             return TypedResults.ValidationProblem(errors);
-        }
+        
 
-        var user = await userHandler.LoginAsync(request.User, new CancellationToken());
+        var user = await userHandler.LoginAsync(request.User, cancellationToken);
         return TypedResults.Ok(new UserEnvelope<UserDto>(user));
     }
 
-    private static async Task<IResult> CreateUser(IUserHandler userHandler, UserEnvelope<NewUserDto> request)
+    private static async Task<IResult> CreateUser(
+        IUserHandler userHandler, 
+        UserEnvelope<NewUserDto> request,
+        CancellationToken cancellationToken)
     {
         if (!MiniValidator.TryValidate(request, out var errors))
-        {
             return Results.ValidationProblem(errors);
-        }
 
-        var user = await userHandler.CreateAsync(request.User, new CancellationToken());
+        var user = await userHandler.CreateAsync(request.User, cancellationToken);
         return Results.Ok(new UserEnvelope<UserDto>(user));
     }
 
-    private static async Task<IResult> UpdateUser(IUserHandler userHandler, ClaimsPrincipal claimsPrincipal,
-        UserEnvelope<UpdatedUserDto> request)
+    private static async Task<IResult> UpdateUser(
+        IUserHandler userHandler, 
+        ClaimsPrincipal claimsPrincipal,
+        UserEnvelope<UpdatedUserDto> request,
+        CancellationToken cancellationToken)
     {
-        if (!MiniValidator.TryValidate(request, out var errors)) return Results.ValidationProblem(errors);
+        if (!MiniValidator.TryValidate(request, out var errors)) 
+            return Results.ValidationProblem(errors);
 
         var username = claimsPrincipal.GetUsername();
-        var user = await userHandler.UpdateAsync(username, request.User, new CancellationToken());
+        var user = await userHandler.UpdateAsync(username, request.User, cancellationToken);
         return Results.Ok(new UserEnvelope<UserDto>(user));
     }
     
-    private static async Task<UserEnvelope<UserDto>> GetUser(IUserHandler userHandler, ClaimsPrincipal claimsPrincipal)
+    private static async Task<UserEnvelope<UserDto>> GetUser(
+        IUserHandler userHandler, 
+        ClaimsPrincipal claimsPrincipal,
+        CancellationToken cancellationToken)
     {
-        var username = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
-        var user = await userHandler.GetAsync(username!, new CancellationToken());
+        var username = claimsPrincipal.GetUsername();
+        var user = await userHandler.GetAsync(username, cancellationToken);
         return new UserEnvelope<UserDto>(user);
     }
 }
