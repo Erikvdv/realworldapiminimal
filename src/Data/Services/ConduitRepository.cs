@@ -111,10 +111,15 @@ public class ConduitRepository(ConduitContext context) : IConduitRepository
             .Skip(articlesQuery.Offset).Take(articlesQuery.Limit)
             .Include(x => x.Author)
             .Include(x => x.Tags)
+            .Include(x => x.ArticleFavorites)
             .AsNoTracking();
 
         var page = await pageQuery.ToListAsync(cancellationToken);
-
+        foreach (var article in page)
+        {
+            article.FavoritesCount = article.ArticleFavorites.Count;
+        }
+        
         return new ArticlesResponseDto(page, total);
     }
 
