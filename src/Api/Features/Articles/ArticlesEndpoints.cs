@@ -1,32 +1,30 @@
+using Microsoft.OpenApi.Models;
 using Realworlddotnet.Core.Dto;
+using Realworlddotnet.Infrastructure.Extensions.OpenApi;
 
 namespace Realworlddotnet.Api.Features.Articles;
 
-public class ArticlesRoutes : ICarterModule
+public static class ArticlesEndpoints
 {
-    public void AddRoutes(IEndpointRouteBuilder app)
+    public static void AddArticlesEndpoints(this IEndpointRouteBuilder app)
     {
-        var unAuthorizedGroup = app.MapGroup("articles")
-            .WithTags("Articles")
-            .IncludeInOpenApi();
+        var unAuthorizedGroup = app.MapGroup("articles").WithTags("Articles");
 
-        var authorizedGroup = app.MapGroup("articles")
-            .RequireAuthorization()
-            .WithTags("Articles")
-            .IncludeInOpenApi();
+        var authorizedGroup = app.MapGroup("articles").RequireAuthorization().WithTags("Articles")
+            .WithUnauthenticated();
 
         unAuthorizedGroup.MapGet("/", GetArticles);
         unAuthorizedGroup.MapGet("/{slug}", GetArticleBySlug);
         unAuthorizedGroup.MapGet("/{slug}/comments", GetComments);
         
-        authorizedGroup.MapPost("/", CreateArticle).Produces(StatusCodes.Status401Unauthorized);
-        authorizedGroup.MapPut("/{slug}", UpdateArticle).Produces(StatusCodes.Status401Unauthorized);
-        authorizedGroup.MapDelete("/{slug}", DeleteArticle).Produces(StatusCodes.Status401Unauthorized);
-        authorizedGroup.MapPost("/{slug}/favorite", FavoriteBySlug).Produces(StatusCodes.Status401Unauthorized);
-        authorizedGroup.MapDelete("/{slug}/favorite", UnfavoriteBySlug).Produces(StatusCodes.Status401Unauthorized);
-        authorizedGroup.MapGet("/feed", GetFeed).Produces(StatusCodes.Status401Unauthorized);
-        authorizedGroup.MapPost("{slug}/comments", CreateComment).Produces(StatusCodes.Status401Unauthorized);
-        authorizedGroup.MapDelete("{slug}/comments/{commentId:int}", DeleteComment).Produces(StatusCodes.Status401Unauthorized);
+        authorizedGroup.MapPost("/", CreateArticle);
+        authorizedGroup.MapPut("/{slug}", UpdateArticle);
+        authorizedGroup.MapDelete("/{slug}", DeleteArticle);
+        authorizedGroup.MapPost("/{slug}/favorite", FavoriteBySlug);
+        authorizedGroup.MapDelete("/{slug}/favorite", UnfavoriteBySlug);
+        authorizedGroup.MapGet("/feed", GetFeed);
+        authorizedGroup.MapPost("{slug}/comments", CreateComment);
+        authorizedGroup.MapDelete("{slug}/comments/{commentId:int}", DeleteComment);
     }
 
     private static async Task<Ok<ArticlesResponse>> GetArticles(

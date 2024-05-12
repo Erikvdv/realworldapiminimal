@@ -1,22 +1,19 @@
 using Realworlddotnet.Core.Dto;
+using Realworlddotnet.Infrastructure.Extensions.OpenApi;
 
 namespace Realworlddotnet.Api.Features.Users;
 
-public class UserRoutes : ICarterModule
+public static class UserEndpoints
 {
-    public void AddRoutes(IEndpointRouteBuilder app)
+    public static void AddUserEndpoints(this IEndpointRouteBuilder app)
     {
-        var userGroup = app.MapGroup("user")
-            .RequireAuthorization()
-            .WithTags("User")
-            .IncludeInOpenApi();
-        
-        var usersGroup = app.MapGroup("users")
-            .WithTags("User")
-            .IncludeInOpenApi();
+        var userGroup = app.MapGroup("user").RequireAuthorization().WithTags("User")
+            .WithUnauthenticated();
+        var usersGroup = app.MapGroup("users").WithTags("User");
         
         userGroup.MapGet("/", GetUser);
         userGroup.MapPut("/", UpdateUser);
+        
         usersGroup.MapPost("/", CreateUser);
         usersGroup.MapPost("/login", LoginUser);
     }

@@ -17,7 +17,7 @@ public class ProfilesHandler(IConduitRepository repository) : IProfilesHandler
 
         var isFollowing = false;
 
-        if (username is not null)
+        if (!string.IsNullOrEmpty(username))
         {
             isFollowing = await repository.IsFollowingAsync(profileUsername, username, cancellationToken);
         }
@@ -28,6 +28,9 @@ public class ProfilesHandler(IConduitRepository repository) : IProfilesHandler
     public async Task<ProfileDto> FollowProfileAsync(string profileUsername, string username,
         CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(username))
+            throw new ProblemDetailsException(422, "Not logged in");
+        
         var profileUser = await repository.GetUserByUsernameAsync(profileUsername, cancellationToken);
 
         if (profileUser is null)
@@ -43,6 +46,9 @@ public class ProfilesHandler(IConduitRepository repository) : IProfilesHandler
     public async Task<ProfileDto> UnFollowProfileAsync(string profileUsername, string username,
         CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(username))
+            throw new ProblemDetailsException(422, "Not logged in");
+        
         var profileUser = await repository.GetUserByUsernameAsync(profileUsername, cancellationToken);
 
         if (profileUser is null)

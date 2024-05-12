@@ -1,10 +1,12 @@
 namespace Realworlddotnet.Api.Features.Tags;
 
-public class TagsRoutes : ICarterModule
+public static class TagsEndpoints 
 {
-    public void AddRoutes(IEndpointRouteBuilder app)
+    public static void AddTagsEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/tags", GetTags).IncludeInOpenApi();
+        var group = app.MapGroup("tags").WithTags("Tags");
+        
+        group.MapGet("/", GetTags);
     }
 
     private static async Task<TagsEnvelope<string[]>> GetTags(ITagsHandler articlesHandler, CancellationToken cancellationToken)

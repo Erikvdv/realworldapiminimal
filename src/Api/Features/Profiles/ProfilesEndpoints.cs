@@ -1,15 +1,14 @@
+using Microsoft.OpenApi.Models;
 using Realworlddotnet.Core.Dto;
+using Realworlddotnet.Infrastructure.Extensions.OpenApi;
 
 namespace Realworlddotnet.Api.Features.Profiles;
 
-public class ProfilesRoutes : ICarterModule
+public static class ProfilesEndpoints 
 {
-    public void AddRoutes(IEndpointRouteBuilder app)
+    public static void AddProfilesEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("profiles")
-            .RequireAuthorization()
-            .WithTags("Profile")
-            .IncludeInOpenApi();
+        var group = app.MapGroup("profiles").RequireAuthorization().WithTags("Profile").WithUnauthenticated();
 
         group.MapGet("{username}", GetProfile);
         group.MapPost("{followUsername}/follow", FollowProfile);
