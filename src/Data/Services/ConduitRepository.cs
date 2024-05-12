@@ -101,7 +101,7 @@ public class ConduitRepository(ConduitContext context) : IConduitRepository
 
         if (isFeed)
         {
-            query = query.Where(x => x.Author.Followers.Any());
+            query = query.Where(x => x.Author.Followers.Count != 0);
         }
 
         query = query.OrderByDescending(x => x.UpdatedAt);

@@ -16,9 +16,9 @@ builder.Host.UseSerilog((hostBuilderContext, services, loggerConfiguration) =>
 
 // setup database connection (used for in memory SQLite).
 // SQLite in memory requires an open connection during the application lifetime
-// #pragma warning disable S125
+#pragma warning disable S125
 // to use a file based SQLite use: "Filename=../realworld.db";
-//#pragma warning restore S125
+#pragma warning restore S125
 const string connectionString = "Filename=:memory:";
 var connection = new SqliteConnection(connectionString);
 connection.Open();
