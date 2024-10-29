@@ -27,44 +27,5 @@ public static class SerilogConfigurationExtensions
                     outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {UserId} {Message:lj}{NewLine}{Exception}"));
         return loggerConfiguration;
     }
-
-    [Obsolete]
-    public static LoggerConfiguration AddApplicationInsightsLogging(
-        this LoggerConfiguration loggerConfiguration,
-        IServiceProvider services,
-        IConfiguration configuration)
-    {
-        var instrumentationKey = configuration.GetValue<string>("ApplicationInsights:InstrumentationKey");
-        var authenticationApiKey = configuration.GetValue<string>("ApplicationInsights:AuthenticationApiKey");
-
-        if (string.IsNullOrWhiteSpace(instrumentationKey))
-        {
-            return loggerConfiguration;
-        }
-
-        var config = TelemetryConfiguration.CreateDefault();
-        config.InstrumentationKey = instrumentationKey;
-
-        if (!string.IsNullOrWhiteSpace(authenticationApiKey))
-        {
-            QuickPulseTelemetryProcessor? quickPulseProcessor = null;
-            config.DefaultTelemetrySink.TelemetryProcessorChainBuilder.Use(next =>
-                {
-                    quickPulseProcessor = new QuickPulseTelemetryProcessor(next);
-                    return quickPulseProcessor;
-                })
-                .Build();
-            var quickPulse = new QuickPulseTelemetryModule { AuthenticationApiKey = authenticationApiKey };
-            quickPulse.Initialize(config);
-
-            quickPulse.RegisterTelemetryProcessor(quickPulseProcessor);
-        }
-
-        TelemetryClient client = new(config);
-        loggerConfiguration.WriteTo.ApplicationInsights(
-            client,
-            TelemetryConverter.Traces);
-
-        return loggerConfiguration;
-    }
+    
 }
