@@ -5,7 +5,11 @@ namespace Realworlddotnet.Core.Repositories;
 
 public interface IConduitRepository
 {
-    public Task AddUserAsync(User user);
+    public void AddUser(User user);
+    
+    public Task<bool> UserExistsAsync(string username);
+    
+    public Task<bool> EmailExistsAsync(string email);
 
     public Task<User?> GetUserByEmailAsync(string email);
 

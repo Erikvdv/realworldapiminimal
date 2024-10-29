@@ -1,4 +1,5 @@
-﻿using Realworlddotnet.Core.Dto;
+﻿using Microsoft.AspNetCore.Mvc;
+using Realworlddotnet.Core.Dto;
 using Realworlddotnet.Core.Repositories;
 
 namespace Realworlddotnet.Api.Features.Users;
@@ -7,8 +8,27 @@ public class UserHandler(IConduitRepository repository, ITokenGenerator tokenGen
 {
     public async Task<UserDto> CreateAsync(NewUserDto newUser, CancellationToken cancellationToken)
     {
+        if (await repository.UserExistsAsync(newUser.Username))
+        {
+            throw new ProblemDetailsException(new ValidationProblemDetails
+            {
+                Status = 422,
+                Detail = "Cannot register user",
+                Errors = { new KeyValuePair<string, string[]>("Username", new[] { "Username not available" }) }
+            });
+        }
+
+        if (await repository.EmailExistsAsync(newUser.Email))
+        {
+            throw new ProblemDetailsException(new ValidationProblemDetails
+            {
+                Status = 422,
+                Detail = "Cannot register user",
+                Errors = { new KeyValuePair<string, string[]>("Email", new[] { "Email address already in use" }) }
+            });
+        }
         var user = new User(newUser);
-        await repository.AddUserAsync(user);
+        repository.AddUser(user);
         await repository.SaveChangesAsync(cancellationToken);
         var token = tokenGenerator.CreateToken(user.Username);
         return new UserDto(user.Username, user.Email, token, user.Bio, user.Image);

@@ -15,29 +15,19 @@ namespace Realworlddotnet.Data.Services;
 
 public class ConduitRepository(ConduitContext context) : IConduitRepository
 {
-    public async Task AddUserAsync(User user)
+    public void AddUser(User user)
     {
-        if (await context.Users.AnyAsync(x => x.Username == user.Username))
-        {
-            throw new ProblemDetailsException(new ValidationProblemDetails
-            {
-                Status = 422,
-                Detail = "Cannot register user",
-                Errors = { new KeyValuePair<string, string[]>("Username", ["Username not available"]) }
-            });
-        }
-
-        if (await context.Users.AnyAsync(x => x.Email == user.Email))
-        {
-            throw new ProblemDetailsException(new ValidationProblemDetails
-            {
-                Status = 422,
-                Detail = "Cannot register user",
-                Errors = { new KeyValuePair<string, string[]>("Email", ["Email address already in use"]) }
-            });
-        }
-
         context.Users.Add(user);
+    }
+
+    public async Task<bool> UserExistsAsync(string username)
+    {
+       return await context.Users.AnyAsync(x => x.Username == username);
+    }
+
+    public async Task<bool> EmailExistsAsync(string email)
+    {
+        return await context.Users.AnyAsync(x => x.Email == email);
     }
 
     public async Task<User?> GetUserByEmailAsync(string email)
