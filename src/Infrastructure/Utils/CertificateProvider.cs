@@ -40,14 +40,14 @@ public class CertificateProvider(ILogger<CertificateProvider> logger)
         }
 
         logger.LogInformation("Loading certificate {Thumbprint}", filename);
-        var certCollection = new X509Certificate2Collection();
-        certCollection.Import(filename, password);
+        
+        var certificate = X509CertificateLoader.LoadPkcs12FromFile(filename, password);
 
-        if (certCollection.Count <= 0)
+        if (certificate == null)
         {
             throw new ArgumentException("Unable to locate any certificate");
         }
 
-        return certCollection[0];
+        return certificate;
     }
 }
