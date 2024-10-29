@@ -22,7 +22,7 @@ public class DataTests
 
         var connectionString = "Filename=:memory:";
         var connection = new SqliteConnection(connectionString);
-        connection.Open();
+        await connection.OpenAsync();
 
         try
         {
@@ -39,14 +39,14 @@ public class DataTests
             await using (var context = new ConduitContext(contextOptions))
             {
                 var repo = new ConduitRepository(context);
-                await repo.AddUserAsync(new User(new NewUserDto(username1, "test1@test.com", "Test1234")));
+                repo.AddUser(new User(new NewUserDto(username1, "test1@test.com", "Test1234")));
                 await repo.SaveChangesAsync(CancellationToken.None);
             }
 
             await using (var context = new ConduitContext(contextOptions))
             {
                 var repo = new ConduitRepository(context);
-                await repo.AddUserAsync(new User(new NewUserDto(username2, "test2@test.com", "Test1234")));
+                repo.AddUser(new User(new NewUserDto(username2, "test2@test.com", "Test1234")));
                 await repo.SaveChangesAsync(CancellationToken.None);
             }
 
@@ -54,12 +54,12 @@ public class DataTests
             {
                 var repo = new ConduitRepository(context);
                 var usr = await repo.GetUserByUsernameAsync(username1, CancellationToken.None);
-                usr.Username.Should().Be(username1);
+                usr?.Username.Should().Be(username1);
             }
         }
         finally
         {
-            connection.Close();
+            await connection.CloseAsync();
         }
     }
 
@@ -75,7 +75,7 @@ public class DataTests
 
         var connectionString = "Filename=:memory:";
         var connection = new SqliteConnection(connectionString);
-        connection.Open();
+        await connection.OpenAsync();
 
         try
         {
@@ -121,7 +121,7 @@ public class DataTests
         }
         finally
         {
-            connection.Close();
+            await connection.CloseAsync();
         }
     }
 
@@ -139,7 +139,7 @@ public class DataTests
 
         var connectionString = "Filename=:memory:";
         var connection = new SqliteConnection(connectionString);
-        connection.Open();
+        await connection.OpenAsync();
 
         try
         {
@@ -165,7 +165,8 @@ public class DataTests
             {
                 var repo = new ConduitRepository(context);
                 var usr1 = await repo.GetUserByUsernameAsync(username1, CancellationToken.None);
-                article1.Author = usr1;
+                usr1.Should().NotBeNull();
+                article1.Author = usr1!;
                 repo.AddArticle(article1);
                 await repo.SaveChangesAsync(CancellationToken.None);
             }
@@ -223,7 +224,7 @@ public class DataTests
         }
         finally
         {
-            connection.Close();
+            await connection.CloseAsync();
         }
     }
 }

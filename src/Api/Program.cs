@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using System.Configuration;
+using Microsoft.OpenApi.Models;
 using Realworlddotnet.Api.Features.Articles;
 using Realworlddotnet.Api.Features.Profiles;
 using Realworlddotnet.Api.Features.Tags;
@@ -12,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((hostBuilderContext, services, loggerConfiguration) =>
 {
     loggerConfiguration.ConfigureBaseLogging("realworldDotnet");
-    loggerConfiguration.AddApplicationInsightsLogging(services, hostBuilderContext.Configuration);
 });
 
 // setup database connection (used for in memory SQLite).
@@ -22,7 +22,7 @@ builder.Host.UseSerilog((hostBuilderContext, services, loggerConfiguration) =>
 #pragma warning restore S125
 const string connectionString = "Filename=:memory:";
 var connection = new SqliteConnection(connectionString);
-connection.Open();
+await connection.OpenAsync();
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -76,8 +76,8 @@ Log.Information("Start configuring http request pipeline");
 // when using in memory SQLite ensure the tables are created
 using (var scope = app.Services.CreateScope())
 {
-    using var context = scope.ServiceProvider.GetService<ConduitContext>();
-    context?.Database.EnsureCreated();
+    await using var context = scope.ServiceProvider.GetService<ConduitContext>() ?? throw new ConfigurationErrorsException("Could not get ConduitContext");
+    await context.Database.EnsureCreatedAsync();
 }
 
 app.UseSerilogRequestLogging(options =>
@@ -101,7 +101,7 @@ app.MapOpenApi();
 try
 {
     Log.Information("Starting web host");
-    app.Run();
+    await app.RunAsync();
     return 0;
 }
 catch (Exception ex)
@@ -111,7 +111,7 @@ catch (Exception ex)
 }
 finally
 {
-    connection.Close();
-    Log.CloseAndFlush();
+    await connection.CloseAsync();
+    await Log.CloseAndFlushAsync();
     Thread.Sleep(2000);
 }
