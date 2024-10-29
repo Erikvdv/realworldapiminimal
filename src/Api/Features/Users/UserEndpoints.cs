@@ -27,8 +27,7 @@ public static class UserEndpoints
         {
             return TypedResults.ValidationProblem(errors);
         }
-
-
+        
         var user = await userHandler.LoginAsync(request.User, cancellationToken);
         return TypedResults.Ok(new UserEnvelope<UserDto>(user));
     }
@@ -47,7 +46,7 @@ public static class UserEndpoints
         return Results.Ok(new UserEnvelope<UserDto>(user));
     }
 
-    private static async Task<IResult> UpdateUser(
+    private static async Task<Results<ValidationProblem, Ok<UserEnvelope<UserDto>>>> UpdateUser(
         IUserHandler userHandler,
         ClaimsPrincipal claimsPrincipal,
         UserEnvelope<UpdatedUserDto> request,
@@ -55,12 +54,12 @@ public static class UserEndpoints
     {
         if (!MiniValidator.TryValidate(request, out var errors))
         {
-            return Results.ValidationProblem(errors);
+            return TypedResults.ValidationProblem(errors);
         }
 
         var username = claimsPrincipal.GetUsername();
         var user = await userHandler.UpdateAsync(username, request.User, cancellationToken);
-        return Results.Ok(new UserEnvelope<UserDto>(user));
+        return TypedResults.Ok(new UserEnvelope<UserDto>(user));
     }
 
     private static async Task<UserEnvelope<UserDto>> GetUser(
