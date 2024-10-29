@@ -3,7 +3,7 @@ using Realworlddotnet.Core.Repositories;
 
 namespace Realworlddotnet.Api.Features.Profiles;
 
-public class ProfilesHandler(IConduitRepository repository) : IProfilesHandler
+public class ProfilesHandler(IConduitRepository repository)
 {
     public async Task<ProfileDto> GetAsync(string profileUsername, string? username,
         CancellationToken cancellationToken)

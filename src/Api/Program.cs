@@ -29,10 +29,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IConduitRepository, ConduitRepository>();
-builder.Services.AddScoped<IUserHandler, UserHandler>();
-builder.Services.AddScoped<IArticlesHandler, ArticlesHandler>();
-builder.Services.AddScoped<ITagsHandler, TagsHandler>();
-builder.Services.AddScoped<IProfilesHandler, ProfilesHandler>();
+builder.Services.AddScoped<UserHandler>();
+builder.Services.AddScoped<ArticlesHandler>();
+builder.Services.AddScoped<TagsHandler>();
+builder.Services.AddScoped<ProfilesHandler>();
 builder.Services.AddSingleton<CertificateProvider>();
 
 builder.Services.AddSingleton<ITokenGenerator>(container =>

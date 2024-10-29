@@ -4,7 +4,6 @@ using Realworlddotnet.Core.Repositories;
 namespace Realworlddotnet.Api.Features.Users;
 
 public class UserHandler(IConduitRepository repository, ITokenGenerator tokenGenerator)
-    : IUserHandler
 {
     public async Task<UserDto> CreateAsync(NewUserDto newUser, CancellationToken cancellationToken)
     {

@@ -2,7 +2,7 @@
 
 namespace Realworlddotnet.Api.Features.Tags;
 
-public class TagsHandler(IConduitRepository repository) : ITagsHandler
+public class TagsHandler(IConduitRepository repository)
 {
     public async Task<string[]> GetTagsAsync(CancellationToken cancellationToken)
     {

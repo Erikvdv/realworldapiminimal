@@ -9,10 +9,10 @@ public static class TagsEndpoints
         group.MapGet("/", GetTags);
     }
 
-    private static async Task<TagsEnvelope<string[]>> GetTags(ITagsHandler articlesHandler,
+    private static async Task<TagsEnvelope<string[]>> GetTags(TagsHandler tagsHandler,
         CancellationToken cancellationToken)
     {
-        var tags = await articlesHandler.GetTagsAsync(cancellationToken);
+        var tags = await tagsHandler.GetTagsAsync(cancellationToken);
         return new TagsEnvelope<string[]>(tags);
     }
 }

@@ -19,7 +19,7 @@ public static class UserEndpoints
     }
 
     private static async Task<Results<ValidationProblem, Ok<UserEnvelope<UserDto>>>> LoginUser(
-        IUserHandler userHandler,
+        UserHandler userHandler,
         UserEnvelope<LoginUserDto> request,
         CancellationToken cancellationToken)
     {
@@ -33,7 +33,7 @@ public static class UserEndpoints
     }
 
     private static async Task<IResult> CreateUser(
-        IUserHandler userHandler,
+        UserHandler userHandler,
         UserEnvelope<NewUserDto> request,
         CancellationToken cancellationToken)
     {
@@ -47,7 +47,7 @@ public static class UserEndpoints
     }
 
     private static async Task<Results<ValidationProblem, Ok<UserEnvelope<UserDto>>>> UpdateUser(
-        IUserHandler userHandler,
+        UserHandler userHandler,
         ClaimsPrincipal claimsPrincipal,
         UserEnvelope<UpdatedUserDto> request,
         CancellationToken cancellationToken)
@@ -63,7 +63,7 @@ public static class UserEndpoints
     }
 
     private static async Task<UserEnvelope<UserDto>> GetUser(
-        IUserHandler userHandler,
+        UserHandler userHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {

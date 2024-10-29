@@ -3,7 +3,7 @@ using Realworlddotnet.Core.Repositories;
 
 namespace Realworlddotnet.Api.Features.Articles;
 
-public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
+public class ArticlesHandler(IConduitRepository repository)
 {
     public async Task<Article> CreateArticleAsync(
         NewArticleDto newArticle, string username, CancellationToken cancellationToken)

@@ -28,7 +28,7 @@ public static class ArticlesEndpoints
 
     private static async Task<Ok<ArticlesResponse>> GetArticles(
         [AsParameters] ArticlesQuery query,
-        IArticlesHandler articlesHandler,
+        ArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -40,7 +40,7 @@ public static class ArticlesEndpoints
 
     private static async Task<Ok<ArticleEnvelope<ArticleResponse>>> GetArticleBySlug(
         string slug,
-        IArticlesHandler articlesHandler,
+        ArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -53,7 +53,7 @@ public static class ArticlesEndpoints
     private static async Task<Ok> DeleteComment(
         string slug,
         int commentId,
-        IArticlesHandler articlesHandler,
+        ArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -65,7 +65,7 @@ public static class ArticlesEndpoints
     private static async Task<Results<Ok<CommentEnvelope<Comment>>, ValidationProblem>> CreateComment(
         string slug,
         CommentEnvelope<CommentDto> request,
-        IArticlesHandler articlesHandler,
+        ArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
     {
         if (!MiniValidator.TryValidate(request, out var errors))
@@ -81,7 +81,7 @@ public static class ArticlesEndpoints
 
     private static async Task<Ok<ArticlesResponse>> GetFeed(
         [AsParameters] FeedQuery query,
-        IArticlesHandler articlesHandler,
+        ArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -94,7 +94,7 @@ public static class ArticlesEndpoints
 
     private static async Task<Ok<ArticleEnvelope<ArticleResponse>>> UnfavoriteBySlug(
         string slug,
-        IArticlesHandler articlesHandler,
+        ArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -106,7 +106,7 @@ public static class ArticlesEndpoints
 
     private static async Task<Ok<ArticleEnvelope<ArticleResponse>>> FavoriteBySlug(
         string slug,
-        IArticlesHandler articlesHandler,
+        ArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -118,7 +118,7 @@ public static class ArticlesEndpoints
 
     private static async Task<Ok> DeleteArticle(
         string slug,
-        IArticlesHandler articlesHandler,
+        ArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -130,7 +130,7 @@ public static class ArticlesEndpoints
     private static async Task<Results<Ok<ArticleEnvelope<ArticleResponse>>, ValidationProblem>> UpdateArticle(
         string slug,
         ArticleEnvelope<ArticleUpdateDto> request,
-        IArticlesHandler articlesHandler,
+        ArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -147,7 +147,7 @@ public static class ArticlesEndpoints
 
     private static async Task<Results<Ok<ArticleEnvelope<ArticleResponse>>, ValidationProblem>> CreateArticle(
         ArticleEnvelope<NewArticleDto> request,
-        IArticlesHandler articlesHandler,
+        ArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -164,7 +164,7 @@ public static class ArticlesEndpoints
 
     private static async Task<Ok<CommentsEnvelope<List<Comment>>>> GetComments(
         string slug,
-        IArticlesHandler articlesHandler,
+        ArticlesHandler articlesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {

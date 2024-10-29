@@ -16,7 +16,7 @@ public static class ProfilesEndpoints
 
     private static async Task<Ok<ProfilesEnvelope<ProfileDto>>> GetProfile(
         string username,
-        IProfilesHandler profilesHandler,
+        ProfilesHandler profilesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -27,7 +27,7 @@ public static class ProfilesEndpoints
 
     private static async Task<Ok<ProfilesEnvelope<ProfileDto>>> FollowProfile(
         string followUsername,
-        IProfilesHandler profilesHandler,
+        ProfilesHandler profilesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
@@ -38,7 +38,7 @@ public static class ProfilesEndpoints
 
     private static async Task<Ok<ProfilesEnvelope<ProfileDto>>> UnfollowProfile(
         string followUsername,
-        IProfilesHandler profilesHandler,
+        ProfilesHandler profilesHandler,
         ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
