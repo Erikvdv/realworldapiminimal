@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>Realworlddotnet.Core</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.0"/>
-    <PackageReference Update="SonarAnalyzer.CSharp" Version="9.20.0.85982"/>
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="9.32.0.97167" />
   </ItemGroup>
 
 
