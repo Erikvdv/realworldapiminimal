@@ -4,6 +4,7 @@ using Realworlddotnet.Api.Features.Profiles;
 using Realworlddotnet.Api.Features.Tags;
 using Realworlddotnet.Api.Features.Users;
 using Realworlddotnet.Core.Repositories;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,11 +26,7 @@ connection.Open();
 
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SupportNonNullableReferenceTypes();
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "realworlddotnet", Version = "v1" });
-});
+builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IConduitRepository, ConduitRepository>();
 builder.Services.AddScoped<IUserHandler, UserHandler>();
@@ -98,9 +95,8 @@ app.AddProfilesEndpoints();
 app.AddArticlesEndpoints();
 app.AddUserEndpoints();
 
-app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "realworlddotnet v1"));
-
+app.MapScalarApiReference();
+app.MapOpenApi();
 
 try
 {
