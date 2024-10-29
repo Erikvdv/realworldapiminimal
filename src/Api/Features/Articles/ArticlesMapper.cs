@@ -4,7 +4,7 @@ namespace Realworlddotnet.Api.Features.Articles;
 
 public static class ArticlesMapper
 {
-    public static ArticleResponse MapFromArticleEntity(Article article)
+    public static ArticleResponse MapToArticleResponse(this Article article)
     {
         var tags = article.Tags.Select(tag => tag.Id);
         var author = article.Author;
@@ -26,16 +26,16 @@ public static class ArticlesMapper
         return result;
     }
 
-    public static ArticlesResponse MapFromArticles(ArticlesResponseDto articlesResponseDto)
+    public static ArticlesResponse MapToArticlesResponse(this ArticlesResponseDto articlesResponseDto)
     {
         var articles = articlesResponseDto.Articles
-            .Select(MapFromArticleEntity)
+            .Select(MapToArticleResponse)
             .ToList();
         return new ArticlesResponse(articles, articlesResponseDto.ArticlesCount);
     }
 
-    public static Core.Dto.ArticlesQuery MapFromQuery(ArticlesQuery query)
+    public static ArticlesQueryDto MapToArticlesQueryDto(this ArticlesQuery query)
     {
-        return new Core.Dto.ArticlesQuery(query.Tag, query.Author, query.Favorited, query.Limit, query.Offset);
+        return new ArticlesQueryDto(query.Tag, query.Author, query.Favorited, query.Limit, query.Offset);
     }
 }

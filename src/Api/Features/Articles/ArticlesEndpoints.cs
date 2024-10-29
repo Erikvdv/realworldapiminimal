@@ -34,7 +34,7 @@ public static class ArticlesEndpoints
     {
         var user = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         var response = await articlesHandler.GetArticlesAsync(query, user, false, cancellationToken);
-        var result = ArticlesMapper.MapFromArticles(response);
+        var result = response.MapToArticlesResponse();
         return TypedResults.Ok(result);
     }
 
@@ -46,7 +46,7 @@ public static class ArticlesEndpoints
     {
         var user = claimsPrincipal.GetUsername();
         var article = await articlesHandler.GetArticleBySlugAsync(slug, user, cancellationToken);
-        var result = ArticlesMapper.MapFromArticleEntity(article);
+        var result = article.MapToArticleResponse();
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
     }
 
@@ -88,7 +88,7 @@ public static class ArticlesEndpoints
         var user = claimsPrincipal.GetUsername();
         var articlesQuery = new ArticlesQuery(null, null, null, query.Limit, query.Offset);
         var response = await articlesHandler.GetArticlesAsync(articlesQuery, user, false, cancellationToken);
-        var result = ArticlesMapper.MapFromArticles(response);
+        var result = response.MapToArticlesResponse();
         return TypedResults.Ok(result);
     }
 
@@ -100,7 +100,7 @@ public static class ArticlesEndpoints
     {
         var user = claimsPrincipal.GetUsername();
         var article = await articlesHandler.DeleteFavorite(slug, user, cancellationToken);
-        var result = ArticlesMapper.MapFromArticleEntity(article);
+        var result = article.MapToArticleResponse();
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
     }
 
@@ -112,7 +112,7 @@ public static class ArticlesEndpoints
     {
         var user = claimsPrincipal.GetUsername();
         var article = await articlesHandler.AddFavoriteAsync(slug, user, cancellationToken);
-        var result = ArticlesMapper.MapFromArticleEntity(article);
+        var result = article.MapToArticleResponse();
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
     }
 
@@ -141,7 +141,7 @@ public static class ArticlesEndpoints
 
         var user = claimsPrincipal.GetUsername();
         var article = await articlesHandler.UpdateArticleAsync(request.Article, slug, user, cancellationToken);
-        var result = ArticlesMapper.MapFromArticleEntity(article);
+        var result = article.MapToArticleResponse();
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
     }
 
@@ -158,7 +158,7 @@ public static class ArticlesEndpoints
 
         var user = claimsPrincipal.GetUsername();
         var article = await articlesHandler.CreateArticleAsync(request.Article, user, cancellationToken);
-        var result = ArticlesMapper.MapFromArticleEntity(article);
+        var result = article.MapToArticleResponse();
         return TypedResults.Ok(new ArticleEnvelope<ArticleResponse>(result));
     }
 

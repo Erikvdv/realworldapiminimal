@@ -63,21 +63,21 @@ public class ConduitRepository(ConduitContext context) : IConduitRepository
     }
 
     public async Task<ArticlesResponseDto> GetArticlesAsync(
-        ArticlesQuery articlesQuery,
+        ArticlesQueryDto articlesQueryDto,
         string? username,
         bool isFeed,
         CancellationToken cancellationToken)
     {
         var query = context.Articles.Select(x => x);
 
-        if (!string.IsNullOrWhiteSpace(articlesQuery.Author))
+        if (!string.IsNullOrWhiteSpace(articlesQueryDto.Author))
         {
-            query = query.Where(x => x.Author.Username == articlesQuery.Author);
+            query = query.Where(x => x.Author.Username == articlesQueryDto.Author);
         }
 
-        if (!string.IsNullOrWhiteSpace(articlesQuery.Tag))
+        if (!string.IsNullOrWhiteSpace(articlesQueryDto.Tag))
         {
-            query = query.Where(x => x.Tags.Any(tag => tag.Id == articlesQuery.Tag));
+            query = query.Where(x => x.Tags.Any(tag => tag.Id == articlesQueryDto.Tag));
         }
 
         query = query.Include(x => x.Author);
@@ -98,7 +98,7 @@ public class ConduitRepository(ConduitContext context) : IConduitRepository
 
         var total = await query.CountAsync(cancellationToken);
         var pageQuery = query
-            .Skip(articlesQuery.Offset).Take(articlesQuery.Limit)
+            .Skip(articlesQueryDto.Offset).Take(articlesQueryDto.Limit)
             .Include(x => x.Author)
             .Include(x => x.Tags)
             .Include(x => x.ArticleFavorites)

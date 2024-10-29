@@ -64,8 +64,8 @@ public class ArticlesHandler(IConduitRepository repository)
     public Task<ArticlesResponseDto> GetArticlesAsync(ArticlesQuery query, string? username, bool isFeed,
         CancellationToken cancellationToken)
     {
-        var getArticlesQuery = ArticlesMapper.MapFromQuery(query);
-        return repository.GetArticlesAsync(getArticlesQuery, username, false, cancellationToken);
+        var getArticlesQueryDto = query.MapToArticlesQueryDto();
+        return repository.GetArticlesAsync(getArticlesQueryDto, username, false, cancellationToken);
     }
 
 
