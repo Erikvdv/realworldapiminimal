@@ -1,4 +1,5 @@
-﻿using Realworlddotnet.Core.Dto;
+﻿using Microsoft.AspNetCore.Mvc;
+using Realworlddotnet.Core.Dto;
 using Realworlddotnet.Core.Repositories;
 
 namespace Realworlddotnet.Api.Features.Articles;
@@ -31,12 +32,12 @@ public class ArticlesHandler(IConduitRepository repository)
 
         if (article == null)
         {
-            throw new ProblemDetailsException(422, "ArticleNotFound");
+            throw new KeyNotFoundException("ArticleNotFound");
         }
 
         if (username != article.Author.Username)
         {
-            throw new ProblemDetailsException(403, $"{username} is not the author");
+            throw new UnauthorizedAccessException($"{username} is not the author");
         }
 
         article.UpdateArticle(update);
@@ -46,15 +47,13 @@ public class ArticlesHandler(IConduitRepository repository)
 
     public async Task DeleteArticleAsync(string slug, string username, CancellationToken cancellationToken)
     {
+
         var article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
-                      throw new ProblemDetailsException(new HttpValidationProblemDetails
-                      {
-                          Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
-                      });
+                      throw new KeyNotFoundException("Article not found");
 
         if (username != article.Author.Username)
         {
-            throw new ProblemDetailsException(403, $"{username} is not the author");
+            throw new UnauthorizedAccessException($"{username} is not the author");
         }
 
         repository.DeleteArticle(article);
@@ -72,10 +71,7 @@ public class ArticlesHandler(IConduitRepository repository)
     public async Task<Article> GetArticleBySlugAsync(string slug, string? username, CancellationToken cancellationToken)
     {
         var article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
-                      throw new ProblemDetailsException(new HttpValidationProblemDetails
-                      {
-                          Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
-                      });
+                      throw new KeyNotFoundException("Article not found");
 
         var comments = await repository.GetCommentsBySlugAsync(slug, username, cancellationToken);
         article.Comments = comments;
@@ -88,10 +84,7 @@ public class ArticlesHandler(IConduitRepository repository)
     {
         var user = await repository.GetUserByUsernameAsync(username, cancellationToken);
         var article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
-                      throw new ProblemDetailsException(new HttpValidationProblemDetails
-                      {
-                          Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
-                      });
+                      throw new KeyNotFoundException("Article not found");
 
         var comment = new Core.Entities.Comment(commentDto.Body, user.Username, article.Id);
         repository.AddArticleComment(comment);
@@ -104,25 +97,16 @@ public class ArticlesHandler(IConduitRepository repository)
         CancellationToken cancellationToken)
     {
         _ = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
-            throw new ProblemDetailsException(new HttpValidationProblemDetails
-            {
-                Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
-            });
+            throw new KeyNotFoundException("Article not found");
 
         var comments = await repository.GetCommentsBySlugAsync(slug, username, cancellationToken);
         var comment = comments.Find(x => x.Id == commentId)
-                      ?? throw new ProblemDetailsException(new HttpValidationProblemDetails
-                      {
-                          Status = 422, Title = "Comment not found", Detail = $"CommentId {commentId}"
-                      });
+                      ?? throw new KeyNotFoundException("Comment not found");;
 
 
         if (comment.Author.Username != username)
         {
-            throw new ProblemDetailsException(new HttpValidationProblemDetails
-            {
-                Status = 422, Title = "User does not own Article", Detail = $"User: {username},  Slug: {slug}"
-            });
+            throw new UnauthorizedAccessException("User does not own Article");
         }
 
         comments.Remove(comment);
@@ -140,10 +124,7 @@ public class ArticlesHandler(IConduitRepository repository)
     {
         var user = await repository.GetUserByUsernameAsync(username, cancellationToken);
         var article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
-                      throw new ProblemDetailsException(new HttpValidationProblemDetails
-                      {
-                          Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
-                      });
+                      throw new KeyNotFoundException("Article not found");
 
         var articleFavorite = await repository.GetArticleFavoriteAsync(user.Username, article.Id);
 
@@ -161,10 +142,7 @@ public class ArticlesHandler(IConduitRepository repository)
     {
         var user = await repository.GetUserByUsernameAsync(username, cancellationToken);
         var article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken) ??
-                      throw new ProblemDetailsException(new HttpValidationProblemDetails
-                      {
-                          Status = 422, Title = "Article not found", Detail = $"Slug: {slug}"
-                      });
+                      throw new KeyNotFoundException("Article not found");
 
         var articleFavorite = await repository.GetArticleFavoriteAsync(user.Username, article.Id);
 

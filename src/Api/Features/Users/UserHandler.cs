@@ -10,22 +10,12 @@ public class UserHandler(IConduitRepository repository, ITokenGenerator tokenGen
     {
         if (await repository.UserExistsAsync(newUser.Username))
         {
-            throw new ProblemDetailsException(new ValidationProblemDetails
-            {
-                Status = 422,
-                Detail = "Cannot register user",
-                Errors = { new KeyValuePair<string, string[]>("Username", new[] { "Username not available" }) }
-            });
+            throw new ValidationException("Username already exists");
         }
 
         if (await repository.EmailExistsAsync(newUser.Email))
         {
-            throw new ProblemDetailsException(new ValidationProblemDetails
-            {
-                Status = 422,
-                Detail = "Cannot register user",
-                Errors = { new KeyValuePair<string, string[]>("Email", new[] { "Email address already in use" }) }
-            });
+            throw new ValidationException("Email address already in use");
         }
         var user = new User(newUser);
         repository.AddUser(user);
@@ -50,7 +40,7 @@ public class UserHandler(IConduitRepository repository, ITokenGenerator tokenGen
 
         if (user == null || user.Password != login.Password)
         {
-            throw new ProblemDetailsException(422, "Incorrect Credentials");
+            throw new ValidationException("Incorrect Credentials");
         }
 
         var token = tokenGenerator.CreateToken(user.Username);

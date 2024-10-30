@@ -1,9 +1,4 @@
-﻿using System;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
-using Microsoft.Extensions.Configuration;
-using Serilog;
+﻿using Serilog;
 using Serilog.Events;
 
 namespace Realworlddotnet.Infrastructure.Extensions.Logging;
@@ -24,7 +19,7 @@ public static class SerilogConfigurationExtensions
             .Enrich.WithProperty("ApplicationName", appName)
             .WriteTo.Async(a =>
                 a.Console(
-                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {UserId} {Message:lj}{NewLine}{Exception}"));
+                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {TraceId} {UserId} {Message:lj}{NewLine}{Exception}"));
         return loggerConfiguration;
     }
     

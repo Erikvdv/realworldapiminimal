@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.0"/>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0-rc.2.24474.3" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-rc.2.24474.3" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0-rc.2.24474.1" />

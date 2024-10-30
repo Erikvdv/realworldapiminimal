@@ -1,5 +1,5 @@
 ﻿using System.Configuration;
-using Microsoft.OpenApi.Models;
+using System.Security.Authentication;
 using Realworlddotnet.Api.Features.Articles;
 using Realworlddotnet.Api.Features.Profiles;
 using Realworlddotnet.Api.Features.Tags;
@@ -27,6 +27,13 @@ await connection.OpenAsync();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
+builder.Services.AddProblemDetails(o =>
+    {
+        o.CustomizeProblemDetails = context =>
+        { 
+            context.ProblemDetails.Title = context.Exception?.Message ?? context.ProblemDetails.Title;
+        };
+    });
 
 builder.Services.AddScoped<IConduitRepository, ConduitRepository>();
 builder.Services.AddScoped<UserHandler>();
@@ -65,18 +72,14 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
 // for SQLite in memory a connection is provided rather than a connection string
 builder.Services.AddDbContext<ConduitContext>(options => { options.UseSqlite(connection); });
 
-ProblemDetailsExtensions.AddProblemDetails(builder.Services);
-builder.Services.ConfigureOptions<ProblemDetailsLogging>();
+
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-Log.Information("Start configuring http request pipeline");
 
 // when using in memory SQLite ensure the tables are created
 using (var scope = app.Services.CreateScope())
 {
-    await using var context = scope.ServiceProvider.GetService<ConduitContext>() ?? throw new ConfigurationErrorsException("Could not get ConduitContext");
+    await using var context = scope.ServiceProvider.GetService<ConduitContext>() ?? throw new Exception("Could not get ConduitContext");
     await context.Database.EnsureCreatedAsync();
 }
 
@@ -86,7 +89,18 @@ app.UseSerilogRequestLogging(options =>
 );
 
 
-app.UseProblemDetails();
+app.UseExceptionHandler(new ExceptionHandlerOptions
+{
+    StatusCodeSelector = ex => ex switch
+    {
+        AuthenticationException => StatusCodes.Status401Unauthorized,
+        UnauthorizedAccessException => StatusCodes.Status403Forbidden,
+        KeyNotFoundException => StatusCodes.Status404NotFound,
+        ValidationException => StatusCodes.Status422UnprocessableEntity,
+        _ => StatusCodes.Status500InternalServerError
+    }
+});
+app.UseStatusCodePages();
 app.UseAuthentication();
 app.UseAuthorization();
 

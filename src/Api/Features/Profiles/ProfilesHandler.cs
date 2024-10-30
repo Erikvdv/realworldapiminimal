@@ -1,4 +1,5 @@
-﻿using Realworlddotnet.Core.Dto;
+﻿using System.Security.Authentication;
+using Realworlddotnet.Core.Dto;
 using Realworlddotnet.Core.Repositories;
 
 namespace Realworlddotnet.Api.Features.Profiles;
@@ -12,7 +13,7 @@ public class ProfilesHandler(IConduitRepository repository)
 
         if (profileUser is null)
         {
-            throw new ProblemDetailsException(422, "Profile not found");
+            throw new KeyNotFoundException("Profile not found");
         }
 
         var isFollowing = false;
@@ -30,14 +31,14 @@ public class ProfilesHandler(IConduitRepository repository)
     {
         if (string.IsNullOrEmpty(username))
         {
-            throw new ProblemDetailsException(422, "Not logged in");
+            throw new AuthenticationException("Not logged in");
         }
 
         var profileUser = await repository.GetUserByUsernameAsync(profileUsername, cancellationToken);
 
         if (profileUser is null)
         {
-            throw new ProblemDetailsException(422, "Profile not found");
+            throw new KeyNotFoundException("Profile not found");
         }
 
 
@@ -52,14 +53,14 @@ public class ProfilesHandler(IConduitRepository repository)
     {
         if (string.IsNullOrEmpty(username))
         {
-            throw new ProblemDetailsException(422, "Not logged in");
+            throw new AuthenticationException("Not logged in");
         }
 
         var profileUser = await repository.GetUserByUsernameAsync(profileUsername, cancellationToken);
 
         if (profileUser is null)
         {
-            throw new ProblemDetailsException(422, "Profile not found");
+            throw new KeyNotFoundException("Profile not found");
         }
 
         repository.UnFollow(profileUsername, username);

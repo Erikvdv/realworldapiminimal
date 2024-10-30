@@ -1,7 +1,6 @@
 ﻿global using System.ComponentModel.DataAnnotations;
 global using System.Security.Claims;
 global using System.Security.Cryptography.X509Certificates;
-global using Hellang.Middleware.ProblemDetails;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Http.HttpResults;
 global using Microsoft.Data.Sqlite;
@@ -13,7 +12,6 @@ global using Realworlddotnet.Data.Contexts;
 global using Realworlddotnet.Data.Services;
 global using Realworlddotnet.Infrastructure.Extensions.Authentication;
 global using Realworlddotnet.Infrastructure.Extensions.Logging;
-global using Realworlddotnet.Infrastructure.Extensions.ProblemDetails;
 global using Realworlddotnet.Infrastructure.Utils;
 global using Realworlddotnet.Infrastructure.Utils.Interfaces;
 global using Serilog;
